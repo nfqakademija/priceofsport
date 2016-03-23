@@ -1,3 +1,33 @@
+process:
+    resource: "@ProcessBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+import:
+    resource: "@ImportBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+front:
+    resource: "@FrontBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+nfq_process:
+    resource: "@NfqProcessBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+nfq_import:
+    resource: "@NfqImportBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+nfq_front:
+    resource: "@NfqFrontBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 app:
     resource: @AppBundle/Resources/config/routing.yml
     type: yaml
