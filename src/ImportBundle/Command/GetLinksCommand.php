@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use GuzzleHttp;
+use GuzzleHttp\Client;
 use Symfony\Component\DomCrawler\Crawler;
 
 class GetLinksCommand extends ContainerAwareCommand
@@ -35,10 +35,11 @@ class GetLinksCommand extends ContainerAwareCommand
 
         $shopLink = $service->start($id);
 
-        $client = new GuzzleHttp\Client();
+        $client = new Client();
         $response = $client->request('GET', $shopLink);
         $crawler = new Crawler($response->getBody()->getContents(), 'http');
         $categoriesLinks = $this->getCategoriesLinks($crawler);
+
         foreach($categoriesLinks as $item) {
             $response = $client->request('GET', $item);
             $crawler = new Crawler($response->getBody()->getContents(), 'http');
@@ -47,8 +48,8 @@ class GetLinksCommand extends ContainerAwareCommand
                 $response = $client->request('GET', $item . '/?page=' . $i);
                 $crawler = new Crawler($response->getBody()->getContents(), 'http');
                 $products = $this->getCategoryProducts($crawler);
-                foreach ($products as $item) {
-                    $message = $service2->insertShopProductsLinks($id, $item);
+                foreach ($products as $item2) {
+                    $message = $service2->insertShopProductsLinks($id, $item2);
                     $output->writeln($message);
                 }
             }
@@ -58,12 +59,12 @@ class GetLinksCommand extends ContainerAwareCommand
 
     protected function getCategoriesLinks( Crawler $crawler ) {
 
-        //$links = $crawler->filter( 'div#menu_oc ul li a' )->each( function ( Crawler $node, $i ) {
         $links = $crawler->filter( 'div#menu_oc > ul > li > a' )->each( function ( Crawler $node, $i ) {
             return $node->link()->getUri();
         });
 
         return array_values( $links );
+
     }
 
     protected function getCategoryProducts( Crawler $crawler ) {
@@ -73,12 +74,15 @@ class GetLinksCommand extends ContainerAwareCommand
         });
 
         return array_values( $links );
+
     }
 
     protected function getPagesCount( Crawler $crawler ) {
+
         $pages = $crawler->filter( 'div.pagination div.results' )->text();
         $result = explode("(", $pages);
         return str_replace(" Pages)", "", $result[1]);
+
     }
 
 }
