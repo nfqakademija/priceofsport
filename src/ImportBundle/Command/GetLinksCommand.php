@@ -39,8 +39,8 @@ class GetLinksCommand extends ContainerAwareCommand
         foreach($getter->getCategories($shopLink) as $link) {
             $pages = $getter->getPages($link);
             for ($i = 1; $i <= $pages; $i++) {
-                $productsLinks = $getter->getLinks($link.$getter->getPaginationPrefix($shopId, $i));
-                foreach($productsLinks as $productLink) {
+                $productsLinks = $getter->getLinks($link . $getter->getPaginationPrefix($shopId, $i));
+                foreach ($productsLinks as $productLink) {
                     $message = $insertShopInfo->insertProductLink($shopId, $productLink);
                     $output->writeln($message);
                 }

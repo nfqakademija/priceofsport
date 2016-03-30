@@ -26,6 +26,8 @@ class Template
     {
         if($shopId == 1) {
             return "?page=" . $page;
+        } elseif($shopId == 2) {
+            return "?p=" . $page;
         } else {
             return "?page=" . $page;
         }
