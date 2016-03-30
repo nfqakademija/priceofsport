@@ -6,21 +6,21 @@ class LinkParser
 
     protected $shop;
 
-    public function __construct($test)
+    public function __construct($data)
     {
-        $this->shop = $test;
+        $this->shop = $data;
     }
 
-    public function start($id)
+    public function getShopData($shopId)
     {
-        $shopLink = $this->shop->find($id);
-        if (!$shopLink) {
+        $shopData = $this->shop->find($shopId);
+        if (!$shopData) {
             throw new \Exception(
-                'No shop found for id '.$id
+                'No shop found for id '.$shopId
             );
         }
 
-        return $shopLink->getShopLink();
+        return $shopData;
     }
 
 }
