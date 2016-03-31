@@ -28,6 +28,8 @@ class Template
             return "?page=" . $page;
         } elseif($shopId == 2) {
             return "?p=" . $page;
+        } elseif($shopId == 3) {
+            return "?page=" . $page;
         } else {
             return "?page=" . $page;
         }

@@ -32,7 +32,12 @@ class BoardSports implements ImportInterface
     }
 
     protected function getCategoriesLinks( Crawler $crawler ) {
+        $links = $crawler->filter( 'div#menu > ul > li > div > ul > li > a' )->each( function ( Crawler $node, $i ) {
+            var_dump($node->link()->getUri());
+            return $node->link()->getUri();
+        });
 
+        return array_values( $links );
     }
 
     protected function getCategoryProducts( Crawler $crawler ) {
@@ -40,7 +45,10 @@ class BoardSports implements ImportInterface
     }
 
     protected function getPagesCount( Crawler $crawler ) {
+        $pages = $crawler->filter( 'div.pagination div.results' )->text();
+        $result = explode("(", $pages);
 
+        return str_replace("  puslapių (-io)", "", $result[1]);
     }
 
 }
