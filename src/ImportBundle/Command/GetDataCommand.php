@@ -6,8 +6,9 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
-class getDataFromPageCommand extends ContainerAwareCommand
+use ImportBundle\Entity\Product;
+use ImportBundle\Entity\ProductCategory;
+class GetDataCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
@@ -15,18 +16,22 @@ class getDataFromPageCommand extends ContainerAwareCommand
             ->setName('get:data')
             ->setDescription('Get data from pages')
             ->addArgument(
-                'link',
+                'id',
                 InputArgument::REQUIRED,
-                'Link of some page'
+                'ID of some shop'
             );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $link = $input->getArgument('link');
-
-        $output->writeln("The link you typed is: ".$link);
+        $id = $input->getArgument('id');
 
 
+        $product = $this->getDoctrine()
+            ->getRepository('ImportBundle:ProductPageLink')
+            ->find($id);
+
+
+        $output->writeln("Result: ".$product);
     }
 }
