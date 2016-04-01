@@ -2,3 +2,18 @@ services:
 #    import.example:
 #        class: ImportBundle\Example
 #        arguments: ["@service_id", "plain_value", %parameter%]
+
+    import.link.parser:
+        class: ImportBundle\Services\LinkParser
+        arguments: ["@import_shop.customer_repository"]
+
+    import_shop.customer_repository:
+            class: Doctrine\ORM\EntityRepository
+            factory_service: doctrine.orm.default_entity_manager
+            factory_method: getRepository
+            arguments:
+                - "ImportBundle:Shop"
+
+    import.product.link:
+        class: ImportBundle\Services\LinkImporter
+        arguments: [ @doctrine.orm.entity_manager ]

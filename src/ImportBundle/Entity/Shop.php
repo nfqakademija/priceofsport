@@ -28,6 +28,13 @@ class Shop
      */
     private $shopLink;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="shop_name", type="string", length=255)
+     */
+    private $shopName;
+
 
     /**
      * Get id
@@ -61,6 +68,15 @@ class Shop
     public function getShopLink()
     {
         return $this->shopLink;
+    }
+    /**
+     * Get shopName
+     *
+     * @return string
+     */
+    public function getShopName()
+    {
+        return $this->shopName;
     }
 }
 
