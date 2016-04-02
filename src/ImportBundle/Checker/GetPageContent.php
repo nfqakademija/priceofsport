@@ -48,9 +48,9 @@ class GetPageContent {
 
         curl_close($ch);
 
-        $html = file_get_contents($url);
+     //   $html = file_get_contents($url);
 
-        return $html;
+        return $url; //return url if everything is ok
 
     }
 

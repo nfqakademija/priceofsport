@@ -20,10 +20,10 @@ class DataImporter {
      * @param $price
      * @param $description
      * @param $image
-     * @return string
      */
-    public function insertProductLink($shop_id, $category_id, $title, $price, $description, $image) {
+    public function insertProduct($shop_id, $category_id, $title, $price, $description, $image) {
         $product = new Product();
+        $product->setShopId($shop_id);
         $product->setTitle($title);
         $product->setCategoryId($category_id);
         $product->setPrice($price);
@@ -31,8 +31,6 @@ class DataImporter {
         $product->setImage($image);
         $this->data->persist($product);
         $this->data->flush();
-
-        return "The product was successfully submitted to the database";
     }
 
 
