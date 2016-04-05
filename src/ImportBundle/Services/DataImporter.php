@@ -29,6 +29,7 @@ class DataImporter {
         $product->setPrice($price);
         $product->setDescription($description);
         $product->setImage($image);
+        $product->setDateTime(date("Y-m-d H:i:s"));
         $this->data->persist($product);
         $this->data->flush();
     }

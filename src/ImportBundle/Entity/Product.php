@@ -66,7 +66,7 @@ class Product
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_time", type="datetime")
+     * @ORM\Column(name="date_time", type="string")
      */
     private $dateTime;
 
