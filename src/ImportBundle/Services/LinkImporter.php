@@ -5,31 +5,39 @@ use ImportBundle\Entity\ProductPageLink;
 
 class LinkImporter
 {
-    protected $link;
+    protected $import;
+    protected $check;
 
-    public function __construct($data)
+    public function __construct($import, $check)
     {
-
-        $this->link = $data;
-
+        $this->import = $import;
+        $this->check = $check;
     }
 
     /**
      * @param $shopId
      * @param $productLink
+     * @param $categoryId
      * @return string
      */
-    public function insertProductLink($shopId, $productLink) {
-
+    public function insertProductLink($shopId, $productLink, $categoryId)
+    {
         $product = new ProductPageLink();
         $product->setShopId($shopId);
         $product->setPageLink($productLink);
+        $product->setCategoryId($categoryId);
 
-        $this->link->persist($product);
-        $this->link->flush();
+        $exists = $this->check->findBypageLink($productLink);
 
-        return $productLink." inserted!";
+        if (count($exists) == 0) {
+            $this->import->persist($product);
+            $this->import->flush();
+            $message = "inserted!";
+        } else {
+            $message = "exists!";
+        }
 
+        return $productLink." ".$message;
     }
 
 }

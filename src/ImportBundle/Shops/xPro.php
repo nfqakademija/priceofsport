@@ -16,6 +16,11 @@ class xPro implements ImportInterface
         return $this->getCategoriesLinks($this->template->CrawlerShortener($shopLink));
     }
 
+    public function getCategoryName($shopLink)
+    {
+        return $this->getCategoryTitle($this->template->CrawlerShortener($shopLink));
+    }
+
     public function getLinks($categoryLink)
     {
         return $this->getCategoryProducts($this->template->CrawlerShortener($categoryLink));
@@ -31,11 +36,45 @@ class xPro implements ImportInterface
         return $this->template->getPaginationPrefix($shopId, $page);
     }
 
+    public function mapCategoryName($categoryName)
+    {
+        switch($categoryName)
+        {
+            case "JĖGOS AITVARAI":
+                return 1;
+                break;
+            case "BURLENTĖS":
+                return 2;
+                break;
+            case "NARDYMAS":
+                return 3;
+                break;
+            case "IRKLALENTĖS":
+                return 4;
+                break;
+            case "HIDROKOSTIUMAI":
+                return 5;
+                break;
+            case "RIEDLENTĖS":
+                return 6;
+                break;
+            case "SNIEGLENTĖS":
+                return 7;
+                break;
+        }
+    }
+
+    protected function getCategoryTitle( Crawler $crawler ) {
+        $title = $crawler->filter( '.breadcrumb' )->text();
+        $title = trim($title);
+        $categoryName = explode(">", $title);
+        return trim($categoryName[1]);
+    }
+
     protected function getCategoriesLinks( Crawler $crawler ) {
         $links = $crawler->filter( 'div#block_top_menu > ul > li:not(:last-child) > a' )->each( function ( Crawler $node, $i ) {
             return $node->link()->getUri();
         });
-
         return array_values( $links );
     }
 
