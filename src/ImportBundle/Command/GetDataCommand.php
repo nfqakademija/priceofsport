@@ -38,7 +38,7 @@ class GetDataCommand extends ContainerAwareCommand
         $getPageData = $this->getContainer()->get('import.link.getter');
         $getShopInfo = $this->getContainer()->get('import.link.parser');
         $insertProductData = $this->getContainer()->get('import.product.data');
-        
+
         $checker = new Checker\GetPageContent();
 
         $shopData = $getPageData->getShopData($id);
@@ -46,7 +46,7 @@ class GetDataCommand extends ContainerAwareCommand
 
         $controller = "ImportBundle\\Shops\\".$shopName;
         $getter = new $controller();
-
+        
         foreach ($shopData as $item) {
             $link = $checker->getProperUrl($item->getPageLink());
             if ($link != null) {
