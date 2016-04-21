@@ -29,7 +29,7 @@ class GetLinksCommand extends ContainerAwareCommand
 
         $getShopInfo = $this->getContainer()->get('import.link.parser');
         $insertShopInfo = $this->getContainer()->get('import.product.link');
-
+        
         $shopLink = $getShopInfo->getShopData($shopId)->getShopLink();
         $shopName = $getShopInfo->getShopData($shopId)->getShopName();
 

@@ -19,7 +19,7 @@ class LinkGetter
                 'No shop found for id '.$shopId
             );
         }
-       // var_dump($shopData);
+
         return $shopData;
     }
 

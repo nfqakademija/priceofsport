@@ -14,7 +14,8 @@ class Template
 
     }
 
-    public function CrawlerShortener($link) {
+    public function CrawlerShortener($link)
+    {
 
         $response = $this->client->request('GET', $link);
         $crawler = new Crawler($response->getBody()->getContents(), 'http');

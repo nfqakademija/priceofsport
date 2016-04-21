@@ -25,6 +25,12 @@ class GetDataCommand extends ContainerAwareCommand
             );
     }
 
+    /*
+     * Fetching data from pages command
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $id = $input->getArgument('id');
@@ -42,16 +48,16 @@ class GetDataCommand extends ContainerAwareCommand
         $getter = new $controller();
 
         foreach ($shopData as $item) {
-            $link = $item->getPageLink();
-            if ($checker->getContent($link) != null) {
+            $link = $checker->getProperUrl($item->getPageLink());
+            if ($link != null) {
                 $img = $getter->getImage($link);
                 $desc = $getter->getDescription($link);
                 $price = $getter->getPrice($link);
                 $title = $getter->getTitle($link);
-                $insertProductData->insertProduct($id, 0, $title, $price, $desc, $img); // we should consider how we will use category ids/names and stuff..
+                $insertProductData->insertProduct($id, $item, $title, $price, $desc, $img);
 
-               // var_dump($img);
-                $output->writeln("Title: ".$title." Price: ".$price." RESULT: ");
+                $output->writeln("Title: ".$title."\nPrice: ".$price."\nDescription: ".$desc."\nImage URL: ".$img."
+                \n ********************");
             }
         }
     }

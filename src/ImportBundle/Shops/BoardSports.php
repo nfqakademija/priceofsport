@@ -31,7 +31,8 @@ class BoardSports implements ImportInterface
         return $this->template->getPaginationPrefix($shopId, $page);
     }
 
-    protected function getCategoriesLinks( Crawler $crawler ) {
+    protected function getCategoriesLinks( Crawler $crawler )
+    {
         $links = $crawler->filter( 'div#menu > ul > li > div > ul > li > a' )->each( function ( Crawler $node, $i ) {
             var_dump($node->link()->getUri());
             return $node->link()->getUri();
@@ -40,11 +41,13 @@ class BoardSports implements ImportInterface
         return array_values( $links );
     }
 
-    protected function getCategoryProducts( Crawler $crawler ) {
+    protected function getCategoryProducts( Crawler $crawler )
+    {
 
     }
 
-    protected function getPagesCount( Crawler $crawler ) {
+    protected function getPagesCount( Crawler $crawler )
+    {
         $pages = $crawler->filter( 'div.pagination div.results' )->text();
         $result = explode("(", $pages);
 

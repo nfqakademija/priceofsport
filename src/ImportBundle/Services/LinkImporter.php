@@ -19,7 +19,8 @@ class LinkImporter
      * @param $productLink
      * @return string
      */
-    public function insertProductLink($shopId, $productLink) {
+    public function insertProductLink($shopId, $productLink)
+    {
 
         $product = new ProductPageLink();
         $product->setShopId($shopId);

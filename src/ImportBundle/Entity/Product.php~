@@ -3,12 +3,13 @@
 namespace ImportBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ImportBundle\Entity\ProductPageLink;
 
 /**
  * Product
  *
- * @ORM\Table(name="entity\product")
- * @ORM\Entity(repositoryClass="ImportBundle\Repository\Entity\ProductRepository")
+ * @ORM\Table(name="product")
+ * @ORM\Entity(repositoryClass="ImportBundle\Repository\ProductRepository")
  */
 class Product
 {
@@ -22,6 +23,13 @@ class Product
     private $id;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="shop_id", type="integer")
+     */
+    private $shop_id;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
@@ -31,9 +39,10 @@ class Product
     /**
      * @var int
      *
-     * @ORM\Column(name="category_id", type="integer")
+     * @ORM\ManyToOne(targetEntity="ProductPageLink", inversedBy="products")
+     * @ORM\JoinColumn(name="product_page_link", referencedColumnName="id")
      */
-    private $categoryId;
+    private $product_page_link_id;
 
     /**
      * @var string
@@ -59,7 +68,7 @@ class Product
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_time", type="datetime")
+     * @ORM\Column(name="date_time", type="string")
      */
     private $dateTime;
 
@@ -74,6 +83,29 @@ class Product
         return $this->id;
     }
 
+    /**
+     * Set categoryId
+     *
+     * @param integer $shopId
+     *
+     * @return Product
+     */
+    public function setShopId($shopId)
+    {
+        $this->shop_id = $shopId;
+
+        return $this;
+    }
+
+    /**
+     * Get categoryId
+     *
+     * @return int
+     */
+    public function getShopId()
+    {
+        return $this->shop_id;
+    }
     /**
      * Set title
      *
@@ -96,30 +128,6 @@ class Product
     public function getTitle()
     {
         return $this->title;
-    }
-
-    /**
-     * Set categoryId
-     *
-     * @param integer $categoryId
-     *
-     * @return Product
-     */
-    public function setCategoryId($categoryId)
-    {
-        $this->categoryId = $categoryId;
-
-        return $this;
-    }
-
-    /**
-     * Get categoryId
-     *
-     * @return int
-     */
-    public function getCategoryId()
-    {
-        return $this->categoryId;
     }
 
     /**
@@ -217,5 +225,28 @@ class Product
     {
         return $this->dateTime;
     }
-}
 
+    /**
+     * Set productPageLinkId
+     *
+     * @param ProductPageLink $productPageLinkId
+     *
+     * @return Product
+     */
+    public function setProductPageLinkId(ProductPageLink $productPageLinkId = null)
+    {
+        $this->product_page_link_id = $productPageLinkId;
+
+        return $this;
+    }
+
+    /**
+     * Get productPageLinkId
+     *
+     * @return ProductPageLink
+     */
+    public function getProductPageLinkId()
+    {
+        return $this->product_page_link_id;
+    }
+}

@@ -3,6 +3,7 @@
 namespace ImportBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ImportBundle\Entity\ProductPageLink;
 
 /**
  * Product
@@ -38,9 +39,10 @@ class Product
     /**
      * @var int
      *
-     * @ORM\Column(name="category_id", type="integer")
+     * @ORM\ManyToOne(targetEntity="ProductPageLink", inversedBy="products")
+     * @ORM\JoinColumn(name="product_page_link", referencedColumnName="id")
      */
-    private $categoryId;
+    private $product_page_link_id;
 
     /**
      * @var string
@@ -66,9 +68,9 @@ class Product
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_time", type="string")
+     * @ORM\Column(name="date_added", type="string")
      */
-    private $dateTime;
+    private $dateAdded;
 
 
     /**
@@ -126,30 +128,6 @@ class Product
     public function getTitle()
     {
         return $this->title;
-    }
-
-    /**
-     * Set categoryId
-     *
-     * @param integer $categoryId
-     *
-     * @return Product
-     */
-    public function setCategoryId($categoryId)
-    {
-        $this->categoryId = $categoryId;
-
-        return $this;
-    }
-
-    /**
-     * Get categoryId
-     *
-     * @return int
-     */
-    public function getCategoryId()
-    {
-        return $this->categoryId;
     }
 
     /**
@@ -227,13 +205,13 @@ class Product
     /**
      * Set dateTime
      *
-     * @param \DateTime $dateTime
+     * @param \DateTime $dateAdded
      *
      * @return Product
      */
-    public function setDateTime($dateTime)
+    public function setDateAdded($dateAdded)
     {
-        $this->dateTime = $dateTime;
+        $this->dateAdded = $dateAdded;
 
         return $this;
     }
@@ -243,8 +221,32 @@ class Product
      *
      * @return \DateTime
      */
-    public function getDateTime()
+    public function getDateAdded()
     {
-        return $this->dateTime;
+        return $this->dateAdded;
+    }
+
+    /**
+     * Set productPageLinkId
+     *
+     * @param ProductPageLink $productPageLinkId
+     *
+     * @return Product
+     */
+    public function setProductPageLinkId(ProductPageLink $productPageLinkId = null)
+    {
+        $this->product_page_link_id = $productPageLinkId;
+
+        return $this;
+    }
+
+    /**
+     * Get productPageLinkId
+     *
+     * @return ProductPageLink
+     */
+    public function getProductPageLinkId()
+    {
+        return $this->product_page_link_id;
     }
 }
