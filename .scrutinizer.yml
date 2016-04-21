@@ -22,11 +22,3 @@ build:
   dependencies:
     override:
       - composer install --no-interaction --prefer-source
-
-  tests:
-    override:
-      -
-        command: app/phpunit -c app --coverage-clover=coverage.xml
-        coverage:
-          file: coverage.xml
-          format: php-clover
