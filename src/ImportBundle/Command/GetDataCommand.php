@@ -48,9 +48,8 @@ class GetDataCommand extends ContainerAwareCommand
                 $desc = $getter->getDescription($link);
                 $price = $getter->getPrice($link);
                 $title = $getter->getTitle($link);
-                $insertProductData->insertProduct($id, 0, $title, $price, $desc, $img); // we should consider how we will use category ids/names and stuff..
+                $insertProductData->insertProduct($id, 0, $title, $price, $desc, $img);
 
-               // var_dump($img);
                 $output->writeln("Title: ".$title." Price: ".$price." RESULT: ");
             }
         }

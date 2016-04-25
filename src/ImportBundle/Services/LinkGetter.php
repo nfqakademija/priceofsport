@@ -3,7 +3,6 @@ namespace ImportBundle\Services;
 
 class LinkGetter
 {
-
     protected $product_page_link;
 
     public function __construct($data)
@@ -19,8 +18,6 @@ class LinkGetter
                 'No shop found for id '.$shopId
             );
         }
-       // var_dump($shopData);
         return $shopData;
     }
-
 }

@@ -6,6 +6,9 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class SurfHouse implements ImportInterface
 {
+
+    protected $template;
+
     public function __construct()
     {
         $this->template = new Template();
@@ -45,7 +48,7 @@ class SurfHouse implements ImportInterface
         return $this->getProductTitle($this->template->CrawlerShortener($pageLink));
     }
     protected function getCategoriesLinks( Crawler $crawler ) {
-        $links = $crawler->filter( 'div#menu_oc > ul > li > a' )->each( function ( Crawler $node, $i ) {
+        $links = $crawler->filter( 'div#menu_oc > ul > li > a' )->each( function ( Crawler $node ) {
             return $node->link()->getUri();
         });
 
@@ -53,7 +56,7 @@ class SurfHouse implements ImportInterface
     }
 
     protected function getCategoryProducts( Crawler $crawler ) {
-        $links = $crawler->filter( '#content div.image > a' )->each( function ( Crawler $node, $i ) {
+        $links = $crawler->filter( '#content div.image > a' )->each( function ( Crawler $node ) {
             return $node->link()->getUri();
         });
 
@@ -69,7 +72,7 @@ class SurfHouse implements ImportInterface
 
     protected function getImageUrl(Crawler $crawler) {
 
-        $links = $crawler->filter( '#content div.image > a' )->each( function ( Crawler $node, $i ) {
+        $links = $crawler->filter( '#content div.image > a' )->each( function ( Crawler $node ) {
             return $node->link()->getUri();
         });
 

@@ -6,6 +6,9 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class BoardSports implements ImportInterface
 {
+
+    protected $template;
+
     public function __construct()
     {
         $this->template = new Template();
@@ -32,16 +35,12 @@ class BoardSports implements ImportInterface
     }
 
     protected function getCategoriesLinks( Crawler $crawler ) {
-        $links = $crawler->filter( 'div#menu > ul > li > div > ul > li > a' )->each( function ( Crawler $node, $i ) {
+        $links = $crawler->filter( 'div#menu > ul > li > div > ul > li > a' )->each( function ( Crawler $node ) {
             var_dump($node->link()->getUri());
             return $node->link()->getUri();
         });
 
         return array_values( $links );
-    }
-
-    protected function getCategoryProducts( Crawler $crawler ) {
-
     }
 
     protected function getPagesCount( Crawler $crawler ) {

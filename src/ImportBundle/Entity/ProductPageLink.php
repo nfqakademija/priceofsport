@@ -104,7 +104,7 @@ class ProductPageLink
     /**
      * Set categoryId
      *
-     * @param integer $shopId
+     * @param integer $categoryId
      *
      * @return ProductPageLink
      */

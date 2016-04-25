@@ -3,7 +3,6 @@ namespace ImportBundle\Services;
 
 class LinkParser
 {
-
     protected $shop;
 
     public function __construct($data)
@@ -11,7 +10,7 @@ class LinkParser
         $this->shop = $data;
     }
 
-    public function getShopData($shopId)
+    public function getShopInfo($shopId)
     {
         $shopData = $this->shop->find($shopId);
         if (!$shopData) {
@@ -19,8 +18,6 @@ class LinkParser
                 'No shop found for id '.$shopId
             );
         }
-
         return $shopData;
     }
-
 }
