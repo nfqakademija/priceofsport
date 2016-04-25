@@ -1,19 +1,24 @@
 <?php
 namespace ImportBundle\Services;
 
-class LinkParser
+class LinkGetter
 {
 
-    protected $shop;
+    protected $product_page_link;
 
     public function __construct($data)
     {
-        $this->shop = $data;
+        $this->product_page_link = $data;
     }
 
+    /**
+     * @param $shopId
+     * @return mixed
+     * @throws \Exception
+     */
     public function getShopData($shopId)
     {
-        $shopData = $this->shop->find($shopId);
+        $shopData = $this->product_page_link->findByShopId($shopId);
         if (!$shopData) {
             throw new \Exception(
                 'No shop found for id '.$shopId

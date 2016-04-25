@@ -17,3 +17,18 @@ services:
     import.product.link:
         class: ImportBundle\Services\LinkImporter
         arguments: [ @doctrine.orm.entity_manager ]
+
+    import.link.getter:
+        class: ImportBundle\Services\LinkGetter
+        arguments: ["@fetch_links.customer_repository"]
+
+    fetch_links.customer_repository:
+            class: Doctrine\ORM\EntityRepository
+            factory_service: doctrine.orm.default_entity_manager
+            factory_method: getRepository
+            arguments:
+                - "ImportBundle:ProductPageLink"
+
+    import.product.data:
+        class: ImportBundle\Services\DataImporter
+        arguments: [ @doctrine.orm.entity_manager ]

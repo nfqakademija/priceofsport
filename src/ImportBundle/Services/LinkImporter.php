@@ -7,12 +7,21 @@ class LinkImporter
 {
     protected $link;
 
-    public function __construct($test)
+    public function __construct($data)
     {
-        $this->link = $test;
+
+        $this->link = $data;
+
     }
 
-    public function insertShopProductsLinks($shopId, $productLink) {
+    /**
+     * @param $shopId
+     * @param $productLink
+     * @return string
+     */
+    public function insertProductLink($shopId, $productLink)
+    {
+
         $product = new ProductPageLink();
         $product->setShopId($shopId);
         $product->setPageLink($productLink);
@@ -21,6 +30,7 @@ class LinkImporter
         $this->link->flush();
 
         return $productLink." inserted!";
+
     }
 
 }
