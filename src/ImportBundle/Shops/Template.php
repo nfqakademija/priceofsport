@@ -7,6 +7,9 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class Template
 {
+
+    protected $client;
+
     public function __construct()
     {
 

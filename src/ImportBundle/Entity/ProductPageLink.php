@@ -36,6 +36,13 @@ class ProductPageLink
      */
     private $pageLink;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="category_id", type="integer")
+     */
+    private $categoryId;
+
 
     /**
      * @ORM\OneToMany(targetEntity="Product", mappedBy="product_page_link_id")
@@ -105,6 +112,30 @@ class ProductPageLink
     public function getPageLink()
     {
         return $this->pageLink;
+    }
+
+    /**
+     * Set categoryId
+     *
+     * @param integer $categoryId
+     *
+     * @return ProductPageLink
+     */
+    public function setCategoryId($categoryId)
+    {
+        $this->categoryId = $categoryId;
+
+        return $this;
+    }
+
+    /**
+     * Get categoryId
+     *
+     * @return int
+     */
+    public function getCategoryId()
+    {
+        return $this->categoryId;
     }
 
     /**

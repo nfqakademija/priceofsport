@@ -17,7 +17,7 @@ class GetPageContent {
         $file = $url;
         $file_headers = @get_headers($file);
         if($file_headers[0] == 'HTTP/1.1 404 Not Found') {
-            echo "This page doesn't exists";
+            echo "This page does not exist!";
             return null;
         }
 
@@ -49,7 +49,6 @@ class GetPageContent {
         curl_close($ch);
 
         return $url; //return url if everything is ok
-
     }
 
 }

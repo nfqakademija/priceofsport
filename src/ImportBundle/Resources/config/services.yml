@@ -3,10 +3,6 @@ services:
 #        class: ImportBundle\Example
 #        arguments: ["@service_id", "plain_value", %parameter%]
 
-    import.link.parser:
-        class: ImportBundle\Services\LinkParser
-        arguments: ["@import_shop.customer_repository"]
-
     import_shop.customer_repository:
             class: Doctrine\ORM\EntityRepository
             factory_service: doctrine.orm.default_entity_manager
@@ -14,13 +10,20 @@ services:
             arguments:
                 - "ImportBundle:Shop"
 
+    import.link.parser:
+        class: ImportBundle\Services\LinkParser
+        arguments: ["@import_shop.customer_repository"]
+
+    import_shopLink.customer_repository:
+            class: Doctrine\ORM\EntityRepository
+            factory_service: doctrine.orm.default_entity_manager
+            factory_method: getRepository
+            arguments:
+                - "ImportBundle:ProductPageLink"
+
     import.product.link:
         class: ImportBundle\Services\LinkImporter
-        arguments: [ @doctrine.orm.entity_manager ]
-
-    import.link.getter:
-        class: ImportBundle\Services\LinkGetter
-        arguments: ["@fetch_links.customer_repository"]
+        arguments: ["@doctrine.orm.entity_manager", "@import_shopLink.customer_repository"]
 
     fetch_links.customer_repository:
             class: Doctrine\ORM\EntityRepository
@@ -28,6 +31,11 @@ services:
             factory_method: getRepository
             arguments:
                 - "ImportBundle:ProductPageLink"
+
+    import.link.getter:
+        class: ImportBundle\Services\LinkGetter
+        arguments: ["@fetch_links.customer_repository"]
+
 
     import.product.data:
         class: ImportBundle\Services\DataImporter
