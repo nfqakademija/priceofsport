@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new FrontBundle\FrontBundle(),
             new ImportBundle\ImportBundle(),
             new ProcessBundle\ProcessBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
