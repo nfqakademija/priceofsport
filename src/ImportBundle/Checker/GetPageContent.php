@@ -2,18 +2,18 @@
 
 namespace  ImportBundle\Checker;
 
-use GuzzleHttp\Client;
-
-/**
- * Created by PhpStorm.
- * User: tomas
- * Date: 3/24/16
- * Time: 7:13 PM
- */
-
 class GetPageContent {
 
-    public function getContent($url) {
+    /**
+     *  Checks if URL exists
+     *  Checks if URL is redirected to other page
+     *  Fetches original URL
+     *
+     * @param $url
+     * @return null
+     */
+    public function getProperUrl($url)
+    {
         $file = $url;
         $file_headers = @get_headers($file);
         if($file_headers[0] == 'HTTP/1.1 404 Not Found') {
@@ -48,8 +48,7 @@ class GetPageContent {
 
         curl_close($ch);
 
-        return $url;
-
+        return $url; //return url if everything is ok
     }
 
 }

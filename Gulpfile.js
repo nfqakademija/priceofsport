@@ -42,7 +42,7 @@ gulp.task('images', function() {
 
 gulp.task('fonts', function() {
     gulp.src([
-        dir.bower + 'bootstrap-sass/assets/fonts/**'
+            dir.bower + 'bootstrap-sass/assets/fonts/**'
         ])
         .pipe(gulp.dest(dir.dist + 'fonts'));
 });

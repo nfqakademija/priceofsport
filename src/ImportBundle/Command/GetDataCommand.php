@@ -25,6 +25,12 @@ class GetDataCommand extends ContainerAwareCommand
             );
     }
 
+    /*
+     * Fetching data from pages command
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $id = $input->getArgument('id');
@@ -32,7 +38,7 @@ class GetDataCommand extends ContainerAwareCommand
         $getPageData = $this->getContainer()->get('import.link.getter');
         $getShopInfo = $this->getContainer()->get('import.link.parser');
         $insertProductData = $this->getContainer()->get('import.product.data');
-        
+
         $checker = new Checker\GetPageContent();
 
         $shopData = $getPageData->getShopData($id);
@@ -40,17 +46,18 @@ class GetDataCommand extends ContainerAwareCommand
 
         $controller = "ImportBundle\\Shops\\".$shopName;
         $getter = new $controller();
-
+        
         foreach ($shopData as $item) {
-            $link = $item->getPageLink();
-            if ($checker->getContent($link) != null) {
+            $link = $checker->getProperUrl($item->getPageLink());
+            if ($link != null) {
                 $img = $getter->getImage($link);
                 $desc = $getter->getDescription($link);
                 $price = $getter->getPrice($link);
                 $title = $getter->getTitle($link);
-                $insertProductData->insertProduct($id, 0, $title, $price, $desc, $img);
+                $insertProductData->insertProduct($id, $item, $title, $price, $desc, $img);
 
-                $output->writeln("Title: ".$title." Price: ".$price." RESULT: ");
+                $output->writeln("Title: ".$title."\nPrice: ".$price."\nDescription: ".$desc."\nImage URL: ".$img."
+                \n ********************");
             }
         }
     }

@@ -29,9 +29,9 @@ class GetLinksCommand extends ContainerAwareCommand
 
         $getShopInfo = $this->getContainer()->get('import.link.parser');
         $insertShopInfo = $this->getContainer()->get('import.product.link');
-
-        $shopLink = $getShopInfo->getShopInfo($shopId)->getShopLink();
-        $shopName = $getShopInfo->getShopInfo($shopId)->getShopName();
+        
+        $shopLink = $getShopInfo->getShopData($shopId)->getShopLink();
+        $shopName = $getShopInfo->getShopData($shopId)->getShopName();
 
         $controller = "ImportBundle\\Shops\\".$shopName;
         $getter = new $controller();
