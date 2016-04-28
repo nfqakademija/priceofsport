@@ -38,26 +38,42 @@ class GetDataCommand extends ContainerAwareCommand
         $getPageData = $this->getContainer()->get('import.link.getter');
         $getShopInfo = $this->getContainer()->get('import.link.parser');
         $insertProductData = $this->getContainer()->get('import.product.data');
-
+        $product = $this->getContainer()->get('product.customer_repository');
         $checker = new Checker\GetPageContent();
 
         $shopData = $getPageData->getShopData($id);
-        $shopName = $getShopInfo->getShopData($id)->getShopName();
+        $shopName = $getShopInfo->getShopInfo($id)->getShopName();
 
         $controller = "ImportBundle\\Shops\\".$shopName;
+
         $getter = new $controller();
-        
+        $count = 0;
         foreach ($shopData as $item) {
+            $count++;
+            echo "\nImporting ".$count." product...\n";
             $link = $checker->getProperUrl($item->getPageLink());
+
             if ($link != null) {
+                $existingProduct = $product->find($item->getId());
+                
+                if ($existingProduct) {
+                    $output->writeln("Failed to insert product! This product already exsists.\nID: ".$item->getId());
+                    $price = $getter->getPrice($link);
+                    echo "\nBut price will be saved to the history...";
+                    $insertProductData->insertProductPrice($existingProduct, $price);
+                    continue;
+                }
                 $img = $getter->getImage($link);
                 $desc = $getter->getDescription($link);
                 $price = $getter->getPrice($link);
                 $title = $getter->getTitle($link);
-                $insertProductData->insertProduct($id, $item, $title, $price, $desc, $img);
+                $insertedProduct = $insertProductData->insertProduct($id, $item, $title, $price, $desc, $img);
+                $output->writeln(
+                    "Title: " . $title . "\nPrice: " . $price . "\nDescription: " . $desc . "\nImage URL: "
+                    . $img . "\n ********************"
+                );
+                $insertProductData->insertProductPrice($insertedProduct->getId(), $price);
 
-                $output->writeln("Title: ".$title."\nPrice: ".$price."\nDescription: ".$desc."\nImage URL: ".$img."
-                \n ********************");
             }
         }
     }
