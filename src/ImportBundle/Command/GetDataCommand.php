@@ -72,7 +72,7 @@ class GetDataCommand extends ContainerAwareCommand
                     "Title: " . $title . "\nPrice: " . $price . "\nDescription: " . $desc . "\nImage URL: "
                     . $img . "\n ********************"
                 );
-                $insertProductData->insertProductPrice($insertedProduct->getId(), $price);
+                $insertProductData->insertProductPrice($insertedProduct, $price);
 
             }
         }
