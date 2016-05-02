@@ -52,7 +52,7 @@ class DataImporter {
 
         $priceHistory->setProductId($product_id);
         $priceHistory->setPrice($price);
-        $priceHistory->setDateAdded(date("Y-m-d H:i:s"));
+        $priceHistory->setDateAdded(date("Y-m-d"));
 
         $this->data->persist($priceHistory);
         $this->data->flush();
