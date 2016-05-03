@@ -2,6 +2,7 @@
 
 namespace FrontBundle\Controller;
 
+use Proxies\__CG__\ImportBundle\Entity\ProductPageLink;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -16,9 +17,9 @@ class ProductsController extends Controller
     {
         if(isset($category_token))
         {
+            $categoryObj = $this->getCategoryByToken($category_token);
             if(isset($subcategory_token))
             {
-                $categoryObj = $this->getCategoryByToken($category_token);
                 $subcategoryObj = $this->getSubCategoryByToken($categoryObj->getId(), $subcategory_token);
 
                 $productsObj = $this->getDoctrine()
@@ -34,12 +35,18 @@ class ProductsController extends Controller
                     'products' => $productsObj
                 ];
             } else {
-                $categoryObj = $this->getCategoryByToken($category_token);
-                $productsObj = $this->getDoctrine()
-                    ->getRepository('ImportBundle:Product')
+
+                $productPageLink = $this->getDoctrine()
+                    ->getRepository('ImportBundle:ProductPageLink')
                     ->findBy(array(
-                       'shop_id' => $categoryObj->getId()
+                        'categoryId' => $categoryObj->getId()
                     ));
+                $productsObj = array();
+                foreach($productPageLink as $k => $v) {
+                    $productsObj[] = $v->getProducts();
+                }
+
+                //var_dump($productsObj);
 
                 $params = [
                     'categoryId' => $categoryObj->getId(),
