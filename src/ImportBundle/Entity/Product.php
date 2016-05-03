@@ -72,6 +72,12 @@ class Product
      */
     private $dateAdded;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="token", type="string", length=350)
+     */
+    private $token;
 
     /**
      * Get id
@@ -248,5 +254,29 @@ class Product
     public function getProductPageLinkId()
     {
         return $this->product_page_link_id;
+    }
+
+    /**
+     * Set token
+     *
+     * @param string $token
+     *
+     * @return Product
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
+    /**
+     * Get token
+     *
+     * @return string
+     */
+    public function getToken()
+    {
+        return $this->token;
     }
 }
