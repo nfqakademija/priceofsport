@@ -16,11 +16,10 @@ class Builder implements ContainerAwareInterface
 
         $em = $this->container->get('doctrine')->getManager();
         $categories = $em->getRepository('FrontBundle:Categories')->findByParent(0);
-        //var_dump($categories);
         $current_uri = $this->container->get('request')->getRequestUri();
         foreach($categories as $key => $value)
         {
-            $uri = '/category/'.$value->getToken();
+            $uri = '/'.$value->getToken();
             $menu->addChild($value->getId(), array(
                 'uri' => $uri,
                 'attributes' => array('class' => 'nav-item'),
@@ -32,7 +31,7 @@ class Builder implements ContainerAwareInterface
             $childs = $em->getRepository('FrontBundle:Categories')->findByParent($value->getId());
             foreach($childs as $child_key => $child_value)
             {
-                $uri = '/category/'.$value->getToken().'/'.$child_value->getToken();
+                $uri = '/'.$value->getToken().'/'.$child_value->getToken();
                 $menu[$value->getId()]->addChild($child_value->getId(), array(
                     'uri' => $uri,
                     'attributes' => array('class' => 'nav-item'),
