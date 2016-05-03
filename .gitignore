@@ -14,3 +14,5 @@
 /web/images/
 /web/fonts/
 .idea/*
+/ansible/playbook.retry
+/priceofsport.tar.gz

@@ -19,6 +19,11 @@ class SurfHouse implements ImportInterface
         return $this->getCategoriesLinks($this->template->CrawlerShortener($shopLink));
     }
 
+    public function getCategoryName($shopLink)
+    {
+        return $this->getCategoryTitle($this->template->CrawlerShortener($shopLink));
+    }
+
     public function getLinks($categoryLink)
     {
         return $this->getCategoryProducts($this->template->CrawlerShortener($categoryLink));
@@ -32,6 +37,19 @@ class SurfHouse implements ImportInterface
     public function getPaginationPrefix($shopId, $page)
     {
         return $this->template->getPaginationPrefix($shopId, $page);
+    }
+
+    public function mapCategoryName($categoryName)
+    {
+        switch($categoryName)
+        {
+            case "Vandenlentės":
+                return 0;
+                break;
+            case "Kaitai":
+                return 0;
+                break;
+        }
     }
 
     public function getImage($pageLink)
@@ -61,6 +79,13 @@ class SurfHouse implements ImportInterface
         });
 
         return array_values( $links );
+    }
+
+    protected function getCategoryTitle( Crawler $crawler )
+    {
+        $title = $crawler->filter( 'ul.breadcrumbs > li:nth-child(2)' )->text();
+
+        return $title;
     }
 
     protected function getCategoryProducts( Crawler $crawler )

@@ -1,6 +1,7 @@
 <?php
 namespace ImportBundle\Services;
 
+use ImportBundle\Entity\PriceHistory;
 use ImportBundle\Entity\Product;
 
 class DataImporter {
@@ -24,6 +25,7 @@ class DataImporter {
      * @param $description
      * @param $image
      * @internal param $category_id
+     * @return bool
      */
     public function insertProduct($shop_id, $page_link_id, $title, $price, $description, $image)
     {
@@ -37,7 +39,25 @@ class DataImporter {
         $product->setDateAdded(date("Y-m-d H:i:s"));
         $this->data->persist($product);
         $this->data->flush();
+        return $product;
     }
+
+    /**
+     * @param $product_id
+     * @param $price
+     */
+    public function insertProductPrice($product_id, $price)
+    {
+        $priceHistory = new PriceHistory();
+
+        $priceHistory->setProductId($product_id);
+        $priceHistory->setPrice($price);
+        $priceHistory->setDateAdded(date("Y-m-d"));
+
+        $this->data->persist($priceHistory);
+        $this->data->flush();
+    }
+
 
 
 
