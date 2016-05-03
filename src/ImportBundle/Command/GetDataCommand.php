@@ -44,7 +44,6 @@ class GetDataCommand extends ContainerAwareCommand
         $priceHistory = $this->getContainer()->get('price_history.customer_repository');
         
         $checker = new UrlChecker();
-        $priceChecker = new DateChecker();
 
         $shopData = $getPageData->getShopData($id);
         $shopName = $getShopInfo->getShopInfo($id)->getShopName();
@@ -61,18 +60,21 @@ class GetDataCommand extends ContainerAwareCommand
             if ($link != null) {
                 $existingProduct = $product->findOneBy(['product_page_link_id' => $item]);
 
+                echo "\nTOKEN IS: ".$getter->getToken($link);
+
                 if ($existingProduct) {
                     $output->writeln("\nFailed to insert product! This product already exsists.\nID: ".$item->getId());
                     $price = $getter->getPrice($link);
 
-                    $priceDate = $priceHistory->findOneByProductId($existingProduct);
+                    $priceDate = $priceHistory->findOneBy(['productId' => $existingProduct, 'dateAdded' => date("Y-m-d")]);
 
-                    if ($priceChecker->isNew($priceDate->getDateAdded())) {
+                    if ($priceDate) {
+                        echo "\nToday's product price already exsist in the history!";
+                    } else {
                         $insertProductData->insertProductPrice($existingProduct, $price);
                         echo "\nProduct price was added to the history!";
-                    } else {
-                        echo "\nToday's product price already exsist in the history!";
                     }
+
                     continue;
                 }
                 $img = $getter->getImage($link);

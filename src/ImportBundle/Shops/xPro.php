@@ -91,6 +91,16 @@ class xPro implements ImportInterface
         return $this->getProductTitle($this->template->CrawlerShortener($pageLink));
     }
 
+    public function getToken($link)
+    {
+        $lastSlashIndex = strripos($link, "/");
+        $lastDotIndex = strripos($link, ".");
+
+        $token = substr($link, $lastSlashIndex + 1, $lastDotIndex - $lastSlashIndex - 1);
+
+        return $token;
+    }
+
     protected function getCategoriesLinks( Crawler $crawler )
     {
         $links = $crawler->filter( 'div#block_top_menu > ul > li:not(:last-child) > a' )->each( function ( Crawler $node, $i ) {

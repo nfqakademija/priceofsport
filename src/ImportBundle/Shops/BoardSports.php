@@ -87,26 +87,6 @@ class BoardSports implements ImportInterface
         }
     }
 
-    public function getImage($pageLink)
-    {
-        return $this->getImageUrl($this->template->CrawlerShortener($pageLink));
-    }
-
-    public function getDescription($pageLink)
-    {
-        return $this->getDescriptionText($this->template->CrawlerShortener($pageLink));
-    }
-
-    public function getPrice($pageLink)
-    {
-        return $this->getProductPrice($this->template->CrawlerShortener($pageLink));
-    }
-
-    public function getTitle($pageLink)
-    {
-        return $this->getProductTitle($this->template->CrawlerShortener($pageLink));
-    }
-
     protected function getCategoriesLinks( Crawler $crawler )
     {
         $links = $crawler->filter( 'div#menu > ul > li > a' )->each( function ( Crawler $node ) {

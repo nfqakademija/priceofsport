@@ -72,6 +72,16 @@ class SurfHouse implements ImportInterface
         return $this->getProductTitle($this->template->CrawlerShortener($pageLink));
     }
 
+    public function getToken($link)
+    {
+        $lastSlashIndex = strripos($link, "/");
+        $lastDotIndex = strripos($link, ".");
+
+        $token = substr($link, $lastSlashIndex + 1, strlen($link) - $lastSlashIndex);
+
+        return $token;
+    }
+
     protected function getCategoriesLinks( Crawler $crawler )
     {
         $links = $crawler->filter( 'div#menu_oc > ul > li > a' )->each( function ( Crawler $node ) {
