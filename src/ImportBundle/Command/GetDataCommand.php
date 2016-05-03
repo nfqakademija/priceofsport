@@ -1,6 +1,8 @@
 <?php
 namespace ImportBundle\Command;
 
+use ImportBundle\Checker\DateChecker;
+use ImportBundle\Checker\UrlChecker;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -39,7 +41,10 @@ class GetDataCommand extends ContainerAwareCommand
         $getShopInfo = $this->getContainer()->get('import.link.parser');
         $insertProductData = $this->getContainer()->get('import.product.data');
         $product = $this->getContainer()->get('product.customer_repository');
-        $checker = new Checker\GetPageContent();
+        $priceHistory = $this->getContainer()->get('price_history.customer_repository');
+        
+        $checker = new UrlChecker();
+        $priceChecker = new DateChecker();
 
         $shopData = $getPageData->getShopData($id);
         $shopName = $getShopInfo->getShopInfo($id)->getShopName();
@@ -54,13 +59,20 @@ class GetDataCommand extends ContainerAwareCommand
             $link = $checker->getProperUrl($item->getPageLink());
 
             if ($link != null) {
-                $existingProduct = $product->find($item->getId());
-                
+                $existingProduct = $product->findOneBy(['product_page_link_id' => $item]);
+
                 if ($existingProduct) {
-                    $output->writeln("Failed to insert product! This product already exsists.\nID: ".$item->getId());
+                    $output->writeln("\nFailed to insert product! This product already exsists.\nID: ".$item->getId());
                     $price = $getter->getPrice($link);
-                    echo "\nBut price will be saved to the history...";
-                    $insertProductData->insertProductPrice($existingProduct, $price);
+
+                    $priceDate = $priceHistory->findOneByProductId($existingProduct);
+
+                    if ($priceChecker->isNew($priceDate->getDateAdded())) {
+                        $insertProductData->insertProductPrice($existingProduct, $price);
+                        echo "\nProduct price was added to the history!";
+                    } else {
+                        echo "\nToday's product price already exsist in the history!";
+                    }
                     continue;
                 }
                 $img = $getter->getImage($link);
@@ -70,7 +82,7 @@ class GetDataCommand extends ContainerAwareCommand
                 $insertedProduct = $insertProductData->insertProduct($id, $item, $title, $price, $desc, $img);
                 $output->writeln(
                     "Title: " . $title . "\nPrice: " . $price . "\nDescription: " . $desc . "\nImage URL: "
-                    . $img . "\n ********************"
+                    . $img . "\n ******************** \n"
                 );
                 $insertProductData->insertProductPrice($insertedProduct, $price);
 

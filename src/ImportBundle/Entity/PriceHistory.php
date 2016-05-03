@@ -36,6 +36,12 @@ class PriceHistory
      */
     private $price;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_added", type="string")
+     */
+    private $dateAdded;
 
     /**
      * Get id
@@ -94,4 +100,30 @@ class PriceHistory
     {
         return $this->price;
     }
+
+
+    /**
+     * Set dateTime
+     *
+     * @param \DateTime $dateAdded
+     *
+     * @return Product
+     */
+    public function setDateAdded($dateAdded)
+    {
+        $this->dateAdded = $dateAdded;
+
+        return $this;
+    }
+
+    /**
+     * Get dateTime
+     *
+     * @return \DateTime
+     */
+    public function getDateAdded()
+    {
+        return $this->dateAdded;
+    }
+    
 }
