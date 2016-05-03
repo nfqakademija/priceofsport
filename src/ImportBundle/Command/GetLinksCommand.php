@@ -30,18 +30,20 @@ class GetLinksCommand extends ContainerAwareCommand
         $getShopInfo = $this->getContainer()->get('import.link.parser');
         $insertShopInfo = $this->getContainer()->get('import.product.link');
         
-        $shopLink = $getShopInfo->getShopData($shopId)->getShopLink();
-        $shopName = $getShopInfo->getShopData($shopId)->getShopName();
+        $shopLink = $getShopInfo->getShopInfo($shopId)->getShopLink();
+        $shopName = $getShopInfo->getShopInfo($shopId)->getShopName();
 
         $controller = "ImportBundle\\Shops\\".$shopName;
         $getter = new $controller();
+
         foreach($getter->getCategories($shopLink) as $link) {
             $pages = $getter->getPages($link);
             for ($i = 1; $i <= $pages; $i++) {
                 $productsLinks = $getter->getLinks($link . $getter->getPaginationPrefix($shopId, $i));
                 foreach ($productsLinks as $productLink) {
-                    $categoryName = $getter->getCategoryName($productLink);
-                    $message = $categoryName." ".$getter->mapCategoryName($categoryName)." ".$insertShopInfo->insertProductLink($shopId, $productLink, $getter->mapCategoryName($categoryName));
+                   $categoryName = $getter->getCategoryName($productLink);
+                    //$message = $categoryName." ".$getter->mapCategoryName($categoryName)." ".$insertShopInfo->insertProductLink($shopId, $productLink, $getter->mapCategoryName($categoryName));
+                    $message = $categoryName." ".$getter->mapCategoryName($categoryName);
                     $output->writeln($message);
                 }
             }
