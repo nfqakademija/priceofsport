@@ -2,7 +2,7 @@
 
 namespace  ImportBundle\Checker;
 
-class GetPageContent {
+class UrlChecker {
 
     /**
      *  Checks if URL exists
