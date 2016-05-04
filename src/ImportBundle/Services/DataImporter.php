@@ -24,10 +24,11 @@ class DataImporter {
      * @param $price
      * @param $description
      * @param $image
-     * @internal param $category_id
+     * @param $token
      * @return bool
+     * @internal param $category_id
      */
-    public function insertProduct($shop_id, $page_link_id, $title, $price, $description, $image)
+    public function insertProduct($shop_id, $page_link_id, $title, $price, $description, $image, $token)
     {
         $product = new Product();
         $product->setShopId($shop_id);
@@ -37,6 +38,7 @@ class DataImporter {
         $product->setDescription($description);
         $product->setImage($image);
         $product->setDateAdded(date("Y-m-d H:i:s"));
+        $product->setToken($token);
         $this->data->persist($product);
         $this->data->flush();
         return $product;

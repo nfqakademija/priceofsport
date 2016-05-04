@@ -52,6 +52,9 @@ class GetDataCommand extends ContainerAwareCommand
 
         $getter = new $controller();
         $count = 0;
+
+        $em = $this->getContainer()->get('doctrine')->getManager();
+
         foreach ($shopData as $item) {
             $count++;
             echo "\nImporting ".$count." product...\n";
@@ -60,28 +63,32 @@ class GetDataCommand extends ContainerAwareCommand
             if ($link != null) {
                 $existingProduct = $product->findOneBy(['product_page_link_id' => $item]);
 
-                echo "\nTOKEN IS: ".$getter->getToken($link);
-
                 if ($existingProduct) {
                     $output->writeln("\nFailed to insert product! This product already exsists.\nID: ".$item->getId());
                     $price = $getter->getPrice($link);
-
                     $priceDate = $priceHistory->findOneBy(['productId' => $existingProduct, 'dateAdded' => date("Y-m-d")]);
+                    $storedToken = $existingProduct->getToken();
 
-                    if ($priceDate) {
-                        echo "\nToday's product price already exsist in the history!";
-                    } else {
+                    if (!$priceDate) {
                         $insertProductData->insertProductPrice($existingProduct, $price);
                         echo "\nProduct price was added to the history!";
                     }
 
+                    if ($storedToken == null) {
+                        $token = $getter->getToken($link);
+                        $existingProduct->setToken($token);
+
+                        $em->persist($existingProduct);
+                        $em->flush();
+                    }
                     continue;
                 }
                 $img = $getter->getImage($link);
                 $desc = $getter->getDescription($link);
                 $price = $getter->getPrice($link);
                 $title = $getter->getTitle($link);
-                $insertedProduct = $insertProductData->insertProduct($id, $item, $title, $price, $desc, $img);
+                $token = $getter->getToken($link);
+                $insertedProduct = $insertProductData->insertProduct($id, $item, $title, $price, $desc, $img, $token);
                 $output->writeln(
                     "Title: " . $title . "\nPrice: " . $price . "\nDescription: " . $desc . "\nImage URL: "
                     . $img . "\n ******************** \n"
@@ -90,5 +97,8 @@ class GetDataCommand extends ContainerAwareCommand
 
             }
         }
+
+
+
     }
 }
