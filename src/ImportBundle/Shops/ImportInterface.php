@@ -16,4 +16,5 @@ interface ImportInterface
     public function getPrice($pageLink);
     public function getTitle($pageLink);
     public function getToken($pageLink);
+    public function getCurrency($pageLink);
 }

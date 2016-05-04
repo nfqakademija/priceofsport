@@ -28,7 +28,7 @@ class DataImporter {
      * @return bool
      * @internal param $category_id
      */
-    public function insertProduct($shop_id, $page_link_id, $title, $price, $description, $image, $token)
+    public function insertProduct($shop_id, $page_link_id, $title, $price, $description, $image, $token, $currency)
     {
         $product = new Product();
         $product->setShopId($shop_id);
@@ -39,6 +39,7 @@ class DataImporter {
         $product->setImage($image);
         $product->setDateAdded(date("Y-m-d H:i:s"));
         $product->setToken($token);
+        $product->setCurrencyId($currency);
         $this->data->persist($product);
         $this->data->flush();
         return $product;

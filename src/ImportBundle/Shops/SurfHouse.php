@@ -82,6 +82,11 @@ class SurfHouse implements ImportInterface
         return $token;
     }
 
+    public function getCurrency($pageLink)
+    {
+        return $this->getProductCurrency($this->template->CrawlerShortener($pageLink));
+    }
+
     protected function getCategoriesLinks( Crawler $crawler )
     {
         $links = $crawler->filter( 'div#menu_oc > ul > li > a' )->each( function ( Crawler $node ) {
@@ -142,4 +147,20 @@ class SurfHouse implements ImportInterface
         return $title;
     }
 
+    /**
+     * @param Crawler $crawler
+     * @return int
+     */
+    protected function getProductCurrency(Crawler $crawler)
+    {
+        $fullPrice = $crawler->filter(' #content div.price ')->text();
+
+        if (strpos($fullPrice, '€') !== false || strpos($fullPrice, 'EUR')) {
+            return 1;
+        } else if (strpos($fullPrice, '$') || strpos($fullPrice, 'USD') !== false) {
+            return 2;
+        }
+
+        return 0;
+    }
 }

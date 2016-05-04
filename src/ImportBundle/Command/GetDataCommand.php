@@ -67,20 +67,21 @@ class GetDataCommand extends ContainerAwareCommand
                     $output->writeln("\nFailed to insert product! This product already exsists.\nID: ".$item->getId());
                     $price = $getter->getPrice($link);
                     $priceDate = $priceHistory->findOneBy(['productId' => $existingProduct, 'dateAdded' => date("Y-m-d")]);
-                    $storedToken = $existingProduct->getToken();
 
                     if (!$priceDate) {
                         $insertProductData->insertProductPrice($existingProduct, $price);
                         echo "\nProduct price was added to the history!";
                     }
 
-                    if ($storedToken == null) {
-                        $token = $getter->getToken($link);
-                        $existingProduct->setToken($token);
+                    $token = $getter->getToken($link);
+                    $currency = $getter->getCurrency($link);
 
-                        $em->persist($existingProduct);
-                        $em->flush();
-                    }
+                    $existingProduct->setToken($token);
+                    $existingProduct->setCurrencyId($currency);
+
+                    $em->persist($existingProduct);
+                    $em->flush();
+
                     continue;
                 }
                 $img = $getter->getImage($link);
@@ -88,7 +89,8 @@ class GetDataCommand extends ContainerAwareCommand
                 $price = $getter->getPrice($link);
                 $title = $getter->getTitle($link);
                 $token = $getter->getToken($link);
-                $insertedProduct = $insertProductData->insertProduct($id, $item, $title, $price, $desc, $img, $token);
+                $currency = $getter->getCurrency($link);
+                $insertedProduct = $insertProductData->insertProduct($id, $item, $title, $price, $desc, $img, $token, $currency);
                 $output->writeln(
                     "Title: " . $title . "\nPrice: " . $price . "\nDescription: " . $desc . "\nImage URL: "
                     . $img . "\n ******************** \n"

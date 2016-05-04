@@ -100,7 +100,10 @@ class xPro implements ImportInterface
 
         return $token;
     }
-
+    public function getCurrency($pageLink)
+    {
+        return $this->getProductCurrency($this->template->CrawlerShortener($pageLink));
+    }
     protected function getCategoriesLinks( Crawler $crawler )
     {
         $links = $crawler->filter( 'div#block_top_menu > ul > li:not(:last-child) > a' )->each( function ( Crawler $node, $i ) {
@@ -145,13 +148,31 @@ class xPro implements ImportInterface
     protected function getProductPrice( Crawler $crawler )
     {
         $price = $crawler->filter(' #page div.price #our_price_display ')->text();
-        return trim($price);
+
+        return floatval($price);
     }
 
     protected function getProductTitle( Crawler $crawler )
     {
         $title = $crawler->filter( '#page h1' )->text();
         return $title;
+    }
+
+    /**
+     * @param Crawler $crawler
+     * @return int
+     */
+    protected function getProductCurrency(Crawler $crawler)
+    {
+        $fullPrice = $crawler->filter(' #page div.price #our_price_display ')->text();
+
+        if (strpos($fullPrice, '€') !== false || strpos($fullPrice, 'EUR')) {
+            return 1;
+        } else if (strpos($fullPrice, '$') || strpos($fullPrice, 'USD') !== false) {
+            return 2;
+        }
+
+        return 0;
     }
 
 }
