@@ -36,7 +36,7 @@ class Currency
     private $sign;
 
     /**
-     * @var string
+     * @var float
      *
      * @ORM\Column(name="rate", type="float")
      */
@@ -80,7 +80,7 @@ class Currency
     /**
      * Set sign
      *
-     * @param double $sign
+     * @param string $sign
      *
      * @return Currency
      */

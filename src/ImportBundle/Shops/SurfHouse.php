@@ -153,9 +153,9 @@ class SurfHouse implements ImportInterface
     {
         $fullPrice = $crawler->filter(' #content div.price ')->text();
 
-        if (strpos($fullPrice, '€') !== false || strpos($fullPrice, 'EUR')) {
+        if (stripos($fullPrice, '€') !== false || stripos($fullPrice, 'EUR') !== false) {
             return 1;
-        } elseif (strpos($fullPrice, '$') || strpos($fullPrice, 'USD') !== false) {
+        } elseif (stripos($fullPrice, '$') !== false || stripos($fullPrice, 'USD') !== false) {
             return 2;
         }
 

@@ -45,7 +45,7 @@ class Product
     private $product_page_link_id;
 
     /**
-     * @var string
+     * @var float
      *
      * @ORM\Column(name="price", type="float", length=10)
      */

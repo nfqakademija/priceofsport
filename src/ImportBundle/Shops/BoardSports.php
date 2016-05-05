@@ -54,6 +54,16 @@ class BoardSports implements ImportInterface
         return $this->getProductTitle($this->template->CrawlerShortener($pageLink));
     }
 
+    public function getToken($pageLink)
+    {
+
+    }
+
+    public function getCurrency($pageLink)
+    {
+        return $this->getProductCurrency($this->template->CrawlerShortener($pageLink));
+    }
+
     public function getPaginationPrefix($shopId, $page)
     {
         return $this->template->getPaginationPrefix($shopId, $page);
@@ -149,5 +159,22 @@ class BoardSports implements ImportInterface
     {
         $title = $crawler->filter('#container div.product-info div.description h1')->text();
         return $title;
+    }
+
+    /**
+     * @param Crawler $crawler
+     * @return int
+     */
+    protected function getProductCurrency(Crawler $crawler)
+    {
+        $fullPrice = $crawler->filter(' #container div.product-info div.price ')->text();
+
+        if (stripos($fullPrice, '€') !== false || stripos($fullPrice, 'EUR') !== false) {
+            return 1;
+        } elseif (stripos($fullPrice, '$') !== false || stripos($fullPrice, 'USD') !== false) {
+            return 2;
+        }
+
+        return 0;
     }
 }
