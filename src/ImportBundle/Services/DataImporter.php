@@ -4,7 +4,8 @@ namespace ImportBundle\Services;
 use ImportBundle\Entity\PriceHistory;
 use ImportBundle\Entity\Product;
 
-class DataImporter {
+class DataImporter
+{
 
     protected $data;
 
@@ -60,9 +61,4 @@ class DataImporter {
         $this->data->persist($priceHistory);
         $this->data->flush();
     }
-
-
-
-
-
 }

@@ -12,7 +12,6 @@ use ImportBundle\Entity\Product;
 use ImportBundle\Entity\ProductCategory;
 use ImportBundle\Checker;
 
-
 class GetDataCommand extends ContainerAwareCommand
 {
     protected function configure()
@@ -64,9 +63,13 @@ class GetDataCommand extends ContainerAwareCommand
                 $existingProduct = $product->findOneBy(['product_page_link_id' => $item]);
 
                 if ($existingProduct) {
-                    $output->writeln("\nFailed to insert product! This product already exsists.\nID: ".$item->getId());
+                    $output->writeln(
+                        "\nFailed to insert product! This product already exsists.\nID: ".$item->getId()
+                    );
                     $price = $getter->getPrice($link);
-                    $priceDate = $priceHistory->findOneBy(['productId' => $existingProduct, 'dateAdded' => date("Y-m-d")]);
+                    $priceDate = $priceHistory->findOneBy(
+                        ['productId' => $existingProduct, 'dateAdded' => date("Y-m-d")]
+                    );
 
                     if (!$priceDate) {
                         $insertProductData->insertProductPrice($existingProduct, $price);
@@ -90,17 +93,22 @@ class GetDataCommand extends ContainerAwareCommand
                 $title = $getter->getTitle($link);
                 $token = $getter->getToken($link);
                 $currency = $getter->getCurrency($link);
-                $insertedProduct = $insertProductData->insertProduct($id, $item, $title, $price, $desc, $img, $token, $currency);
+                $insertedProduct = $insertProductData->insertProduct(
+                    $id,
+                    $item,
+                    $title,
+                    $price,
+                    $desc,
+                    $img,
+                    $token,
+                    $currency
+                );
                 $output->writeln(
                     "Title: " . $title . "\nPrice: " . $price . "\nDescription: " . $desc . "\nImage URL: "
                     . $img . "\n ******************** \n"
                 );
                 $insertProductData->insertProductPrice($insertedProduct, $price);
-
             }
         }
-
-
-
     }
 }
