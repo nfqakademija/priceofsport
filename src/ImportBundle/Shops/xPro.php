@@ -38,8 +38,7 @@ class xPro implements ImportInterface
 
     public function mapCategoryName($categoryName)
     {
-        switch($categoryName)
-        {
+        switch ($categoryName) {
             case "JĖGOS AITVARAI":
                 return 1;
                 break;
@@ -64,8 +63,9 @@ class xPro implements ImportInterface
         }
     }
 
-    protected function getCategoryTitle( Crawler $crawler ) {
-        $title = $crawler->filter( '.breadcrumb' )->text();
+    protected function getCategoryTitle(Crawler $crawler)
+    {
+        $title = $crawler->filter('.breadcrumb')->text();
         $title = trim($title);
         $categoryName = explode(">", $title);
         return trim($categoryName[1]);
@@ -91,26 +91,39 @@ class xPro implements ImportInterface
         return $this->getProductTitle($this->template->CrawlerShortener($pageLink));
     }
 
-    protected function getCategoriesLinks( Crawler $crawler )
+    public function getToken($link)
     {
-        $links = $crawler->filter( 'div#block_top_menu > ul > li:not(:last-child) > a' )->each( function ( Crawler $node, $i ) {
+        $lastSlashIndex = strripos($link, "/");
+        $lastDotIndex = strripos($link, ".");
+
+        $token = substr($link, $lastSlashIndex + 1, $lastDotIndex - $lastSlashIndex - 1);
+
+        return $token;
+    }
+    public function getCurrency($pageLink)
+    {
+        return $this->getProductCurrency($this->template->CrawlerShortener($pageLink));
+    }
+    protected function getCategoriesLinks(Crawler $crawler)
+    {
+        $links = $crawler->filter('div#block_top_menu > ul > li:not(:last-child) > a')->each(function (Crawler $node, $i) {
             return $node->link()->getUri();
         });
-        return array_values( $links );
+        return array_values($links);
     }
 
-    protected function getCategoryProducts( Crawler $crawler )
+    protected function getCategoryProducts(Crawler $crawler)
     {
-        $links = $crawler->filter( '.product_img_link' )->each( function ( Crawler $node, $i ) {
+        $links = $crawler->filter('.product_img_link')->each(function (Crawler $node, $i) {
             return $node->link()->getUri();
         });
 
-        return array_values( $links );
+        return array_values($links);
     }
 
-    protected function getPagesCount( Crawler $crawler )
+    protected function getPagesCount(Crawler $crawler)
     {
-        $pagesCount = $crawler->filter( 'div#pagination_bottom ul.pagination li:nth-last-child(2) a span' );
+        $pagesCount = $crawler->filter('div#pagination_bottom ul.pagination li:nth-last-child(2) a span');
         if ($pagesCount->count() > 0) {
             return $pagesCount->text();
         } else {
@@ -120,28 +133,45 @@ class xPro implements ImportInterface
     protected function getImageUrl(Crawler $crawler)
     {
 
-        $links = $crawler->filter( '#page div #image-block a' )->each( function ( Crawler $node, $i ) {
+        $links = $crawler->filter('#page div #image-block a')->each(function (Crawler $node, $i) {
             return $node->link()->getUri();
         });
 
         return $links[0];
     }
 
-    protected function getDescriptionText( Crawler $crawler )
+    protected function getDescriptionText(Crawler $crawler)
     {
-        $text = $crawler->filter( 'section.page-product-box > div.rte' )->text();
+        $text = $crawler->filter('section.page-product-box > div.rte')->text();
         return trim($text);
     }
-    protected function getProductPrice( Crawler $crawler )
+    protected function getProductPrice(Crawler $crawler)
     {
         $price = $crawler->filter(' #page div.price #our_price_display ')->text();
-        return trim($price);
+
+        return floatval($price);
     }
 
-    protected function getProductTitle( Crawler $crawler )
+    protected function getProductTitle(Crawler $crawler)
     {
-        $title = $crawler->filter( '#page h1' )->text();
+        $title = $crawler->filter('#page h1')->text();
         return $title;
     }
 
+    /**
+     * @param Crawler $crawler
+     * @return int
+     */
+    protected function getProductCurrency(Crawler $crawler)
+    {
+        $fullPrice = $crawler->filter(' #page div.price #our_price_display ')->text();
+
+        if (stripos($fullPrice, '€') !== false || stripos($fullPrice, 'EUR') !== false) {
+            return 1;
+        } elseif (stripos($fullPrice, '$') !== false || stripos($fullPrice, 'USD') !== false) {
+            return 2;
+        }
+
+        return 0;
+    }
 }

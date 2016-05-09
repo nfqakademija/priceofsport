@@ -54,6 +54,16 @@ class BoardSports implements ImportInterface
         return $this->getProductTitle($this->template->CrawlerShortener($pageLink));
     }
 
+    public function getToken($pageLink)
+    {
+
+    }
+
+    public function getCurrency($pageLink)
+    {
+        return $this->getProductCurrency($this->template->CrawlerShortener($pageLink));
+    }
+
     public function getPaginationPrefix($shopId, $page)
     {
         return $this->template->getPaginationPrefix($shopId, $page);
@@ -61,8 +71,7 @@ class BoardSports implements ImportInterface
 
     public function mapCategoryName($categoryName)
     {
-        switch($categoryName)
-        {
+        switch ($categoryName) {
             case "Vandenlentės":
                 return 0;
                 break;
@@ -87,58 +96,38 @@ class BoardSports implements ImportInterface
         }
     }
 
-    public function getImage($pageLink)
+    protected function getCategoriesLinks(Crawler $crawler)
     {
-        return $this->getImageUrl($this->template->CrawlerShortener($pageLink));
-    }
-
-    public function getDescription($pageLink)
-    {
-        return $this->getDescriptionText($this->template->CrawlerShortener($pageLink));
-    }
-
-    public function getPrice($pageLink)
-    {
-        return $this->getProductPrice($this->template->CrawlerShortener($pageLink));
-    }
-
-    public function getTitle($pageLink)
-    {
-        return $this->getProductTitle($this->template->CrawlerShortener($pageLink));
-    }
-
-    protected function getCategoriesLinks( Crawler $crawler )
-    {
-        $links = $crawler->filter( 'div#menu > ul > li > a' )->each( function ( Crawler $node ) {
+        $links = $crawler->filter('div#menu > ul > li > a')->each(function (Crawler $node) {
             if ($node->link()->getUri() != "http://bsonline.eu/isparduotuve") {
                 return $node->link()->getUri();
             }
         });
 
-        return array_values( $links );
+        return array_values($links);
     }
 
-    protected function getCategoryTitle( Crawler $crawler )
+    protected function getCategoryTitle(Crawler $crawler)
     {
-        $pages = $crawler->filter( 'div#content .breadcrumb' )->text();
+        $pages = $crawler->filter('div#content .breadcrumb')->text();
         $result = explode(">", $pages);
         $title = trim($result[1]);
 
         return $title;
     }
 
-    protected function getCategoryProducts( Crawler $crawler )
+    protected function getCategoryProducts(Crawler $crawler)
     {
-        $links = $crawler->filter( 'div.image > a' )->each( function ( Crawler $node ) {
+        $links = $crawler->filter('div.image > a')->each(function (Crawler $node) {
             return $node->link()->getUri();
         });
 
-        return array_values( $links );
+        return array_values($links);
     }
 
-    protected function getPagesCount( Crawler $crawler )
+    protected function getPagesCount(Crawler $crawler)
     {
-        $pages = $crawler->filter( 'div.pagination div.results' )->text();
+        $pages = $crawler->filter('div.pagination div.results')->text();
         $result = explode("(", $pages);
         $pagesCount = explode(" ", $result[1]);
 
@@ -148,28 +137,44 @@ class BoardSports implements ImportInterface
     protected function getImageUrl(Crawler $crawler)
     {
 
-        $links = $crawler->filter( '#container div.image a' )->each( function ( Crawler $node, $i ) {
+        $links = $crawler->filter('#container div.image a')->each(function (Crawler $node, $i) {
             return $node->link()->getUri();
         });
 
         return $links[0];
     }
 
-    protected function getDescriptionText( Crawler $crawler )
+    protected function getDescriptionText(Crawler $crawler)
     {
-        $text = $crawler->filter( '#container #content > div.description ' )->text();
+        $text = $crawler->filter('#container #content > div.description ')->text();
         return trim($text);
     }
-    protected function getProductPrice( Crawler $crawler )
+    protected function getProductPrice(Crawler $crawler)
     {
         $price = $crawler->filter(' #container div.product-info div.price ')->text();
         return trim($price);
     }
 
-    protected function getProductTitle( Crawler $crawler )
+    protected function getProductTitle(Crawler $crawler)
     {
-        $title = $crawler->filter( '#container div.product-info div.description h1' )->text();
+        $title = $crawler->filter('#container div.product-info div.description h1')->text();
         return $title;
     }
 
+    /**
+     * @param Crawler $crawler
+     * @return int
+     */
+    protected function getProductCurrency(Crawler $crawler)
+    {
+        $fullPrice = $crawler->filter(' #container div.product-info div.price ')->text();
+
+        if (stripos($fullPrice, '€') !== false || stripos($fullPrice, 'EUR') !== false) {
+            return 1;
+        } elseif (stripos($fullPrice, '$') !== false || stripos($fullPrice, 'USD') !== false) {
+            return 2;
+        }
+
+        return 0;
+    }
 }

@@ -125,5 +125,4 @@ class PriceHistory
     {
         return $this->dateAdded;
     }
-    
 }

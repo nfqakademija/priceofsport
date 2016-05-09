@@ -45,9 +45,9 @@ class Product
     private $product_page_link_id;
 
     /**
-     * @var string
+     * @var float
      *
-     * @ORM\Column(name="price", type="string", length=10)
+     * @ORM\Column(name="price", type="float", length=10)
      */
     private $price;
 
@@ -72,6 +72,19 @@ class Product
      */
     private $dateAdded;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="token", type="string", length=350)
+     */
+    private $token;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="currency_id", type="integer", length=2)
+     */
+    private $currencyId;
 
     /**
      * Get id
@@ -133,7 +146,7 @@ class Product
     /**
      * Set price
      *
-     * @param string $price
+     * @param float $price
      *
      * @return Product
      */
@@ -147,7 +160,7 @@ class Product
     /**
      * Get price
      *
-     * @return string
+     * @return float
      */
     public function getPrice()
     {
@@ -248,5 +261,53 @@ class Product
     public function getProductPageLinkId()
     {
         return $this->product_page_link_id;
+    }
+
+    /**
+     * Set token
+     *
+     * @param string $token
+     *
+     * @return Product
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
+    /**
+     * Get token
+     *
+     * @return string
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * Set currencyId
+     *
+     * @param $currencyId
+     * @return Product
+     *
+     */
+    public function setCurrencyId($currencyId)
+    {
+        $this->currencyId = $currencyId;
+
+        return $this;
+    }
+
+    /**
+     * Get currencyId
+     *
+     * @return int
+     */
+    public function getCurrencyId()
+    {
+        return $this->currencyId;
     }
 }

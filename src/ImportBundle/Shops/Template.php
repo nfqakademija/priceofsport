@@ -28,11 +28,11 @@ class Template
 
     public function getPaginationPrefix($shopId, $page)
     {
-        if($shopId == 1) {
+        if ($shopId == 1) {
             return "?page=" . $page;
-        } elseif($shopId == 2) {
+        } elseif ($shopId == 2) {
             return "?p=" . $page;
-        } elseif($shopId == 3) {
+        } elseif ($shopId == 3) {
             return "?page=" . $page;
         } else {
             return "?page=" . $page;

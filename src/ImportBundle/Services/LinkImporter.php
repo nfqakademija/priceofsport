@@ -39,5 +39,4 @@ class LinkImporter
 
         return $productLink." ".$message;
     }
-
 }
