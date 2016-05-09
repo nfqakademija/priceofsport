@@ -7,12 +7,12 @@
     {% for item in products %}
         <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6">
             <div class="card">
-                <img class="card-img-top img-responsive center-block" src="{{ item.0.image }}" alt="{{ item.0.title }}">
+                <img class="card-img-top img-responsive center-block" src="{{ item.image }}" alt="{{ item.title }}">
                 <div class="card-block">
-                    <h4 class="card-title">{{ item.0.title }}</h4>
+                    <h4 class="card-title">{{ item.title }}</h4>
                     <p class="card-text"></p>
-                    <span class="price pull-left">{{ item.0.price }}</span>
-                    <a href="product/{{ item.0.id }}" class="pull-right btn btn-primary">Plačiau</a>
+                    <span class="price pull-left">{{ item.price }}</span>
+                    <a href="product/{{ item.id }}" class="pull-right btn btn-primary">Plačiau</a>
                     <div class="clearfix"></div>
                 </div>
             </div>

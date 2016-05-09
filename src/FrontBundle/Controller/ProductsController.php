@@ -18,41 +18,60 @@ class ProductsController extends Controller
         if(isset($category_token))
         {
             $categoryObj = $this->getCategoryByToken($category_token);
-            if(isset($subcategory_token))
+            if($categoryObj)
             {
-                $subcategoryObj = $this->getSubCategoryByToken($categoryObj->getId(), $subcategory_token);
+                if (isset($subcategory_token))
+                {
+                    $subcategoryObj = $this->getSubCategoryByToken($categoryObj->getId(), $subcategory_token);
+                    if($subcategoryObj)
+                    {
+                        $productsObj = $this->getDoctrine()
+                            ->getRepository('ImportBundle:Product')
+                            ->findBy(array(
+                                'shop_id' => $subcategoryObj->getId()
+                            ));
 
-                $productsObj = $this->getDoctrine()
-                    ->getRepository('ImportBundle:Product')
-                    ->findBy(array(
-                        'shop_id' => $subcategoryObj->getId()
-                    ));
+                        $params = [
+                            'categoryId' => $categoryObj->getId(),
+                            'subcategoryId' => $subcategoryObj->getId(),
+                            'pageTitle' => $subcategoryObj->getName() . " - " . $categoryObj->getName(),
+                            'products' => $productsObj
+                        ];
+                    } else
+                    {
+                        throw new \Exception(
+                            'SubCategory not found'
+                        );
+                    }
+                } else
+                {
+                    $productPageLink = $this->getDoctrine()
+                        ->getRepository('ImportBundle:ProductPageLink')
+                        ->findBy(array(
+                            'categoryId' => $categoryObj->getId()
+                        ));
 
-                $params = [
-                    'categoryId' => $categoryObj->getId(),
-                    'subcategoryId' => $subcategoryObj->getId(),
-                    'pageTitle' => $subcategoryObj->getName(). " - ". $categoryObj->getName(),
-                    'products' => $productsObj
-                ];
-            } else {
 
-                $productPageLink = $this->getDoctrine()
-                    ->getRepository('ImportBundle:ProductPageLink')
-                    ->findBy(array(
-                        'categoryId' => $categoryObj->getId()
-                    ));
-                $productsObj = array();
-                foreach($productPageLink as $k => $v) {
-                    $productsObj[] = $v->getProducts();
+                    $productsObj = array();
+                    foreach ($productPageLink as $k => $v) {
+                        $productsObj[] = $v->getProducts();
+                        //var_dump($v->getProducts()->getTitle());
+                        //exit();
+                    }
+
+                    //var_dump($productsObj);
+
+                    $params = [
+                        'categoryId' => $categoryObj->getId(),
+                        'pageTitle' => $categoryObj->getName(),
+                        'products' => $productsObj
+                    ];
                 }
-
-                //var_dump($productsObj);
-
-                $params = [
-                    'categoryId' => $categoryObj->getId(),
-                    'pageTitle' => $categoryObj->getName(),
-                    'products' => $productsObj
-                ];
+            } else
+            {
+                throw new \Exception(
+                    'Category not found'
+                );
             }
             return $this->render('FrontBundle:Default:productsList.html.twig', $params);
         }

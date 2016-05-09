@@ -45,14 +45,15 @@ class ProductPageLink
 
 
     /**
-     * @ORM\OneToMany(targetEntity="Product", mappedBy="product_page_link_id")
+     * @ORM\OneToOne(targetEntity="Product", mappedBy="product_page_link_id")
      */
     private $products;
 
-    public function __construct()
+    /*public function __construct()
     {
-        $this->products = new ArrayCollection();
-    }
+        //$this->products = new ArrayCollection();
+        //$this->products = $products;
+    }*/
 
 
 
@@ -138,30 +139,30 @@ class ProductPageLink
         return $this->categoryId;
     }
 
-    /**
-     * Add product
-     *
-     * @param Product $product
-     *
-     * @return ProductPageLink
-     */
-    public function addProduct(Product $product)
-    {
-        $this->products[] = $product;
-
-        return $this;
-    }
-
-    /**
-     * Remove product
-     *
-     * @param Product $product
-     */
-    public function removeProduct(Product $product)
-    {
-        $this->products->removeElement($product);
-    }
-
+//    /**
+//     * Add product
+//     *
+//     * @param Product $product
+//     *
+//     * @return ProductPageLink
+//     */
+//    public function addProduct(Product $product)
+//    {
+//        $this->products[] = $product;
+//
+//        return $this;
+//    }
+//
+//    /**
+//     * Remove product
+//     *
+//     * @param Product $product
+//     */
+//    public function removeProduct(Product $product)
+//    {
+//        $this->products->removeElement($product);
+//    }
+//
     /**
      * Get products
      *

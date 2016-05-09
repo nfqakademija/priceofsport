@@ -42,8 +42,8 @@ class GetLinksCommand extends ContainerAwareCommand
                 $productsLinks = $getter->getLinks($link . $getter->getPaginationPrefix($shopId, $i));
                 foreach ($productsLinks as $productLink) {
                    $categoryName = $getter->getCategoryName($productLink);
-                    //$message = $categoryName." ".$getter->mapCategoryName($categoryName)." ".$insertShopInfo->insertProductLink($shopId, $productLink, $getter->mapCategoryName($categoryName));
-                    $message = $categoryName." ".$getter->mapCategoryName($categoryName);
+                    $message = $categoryName." ".$getter->mapCategoryName($categoryName)." ".$insertShopInfo->insertProductLink($shopId, $productLink, $getter->mapCategoryName($categoryName));
+                    //$message = $categoryName." ".$getter->mapCategoryName($categoryName);
                     $output->writeln($message);
                 }
             }
