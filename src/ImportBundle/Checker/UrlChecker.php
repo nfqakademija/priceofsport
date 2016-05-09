@@ -2,7 +2,8 @@
 
 namespace  ImportBundle\Checker;
 
-class UrlChecker {
+class UrlChecker
+{
 
     /**
      *  Checks if URL exists
@@ -16,7 +17,7 @@ class UrlChecker {
     {
         $file = $url;
         $file_headers = @get_headers($file);
-        if($file_headers[0] == 'HTTP/1.1 404 Not Found') {
+        if ($file_headers[0] == 'HTTP/1.1 404 Not Found') {
             echo "This page does not exist!";
             return null;
         }
@@ -33,14 +34,14 @@ class UrlChecker {
         $out = str_replace("\r", "", $out);
 
         $headers_end = strpos($out, "\n\n");
-        if( $headers_end !== false ) {
+        if ($headers_end !== false) {
             $out = substr($out, 0, $headers_end);
         }
 
         $headers = explode("\n", $out);
 
-        foreach($headers as $header) {
-            if( substr($header, 0, 10) == "Location: " ) {
+        foreach ($headers as $header) {
+            if (substr($header, 0, 10) == "Location: ") {
                 $url = substr($header, 10);
                 break;
             }
@@ -50,6 +51,4 @@ class UrlChecker {
 
         return $url; //return url if everything is ok
     }
-
 }
-

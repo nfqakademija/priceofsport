@@ -12,7 +12,6 @@ use ImportBundle\Entity\Product;
 use ImportBundle\Entity\ProductCategory;
 use ImportBundle\Checker;
 
-
 class GetDataCommand extends ContainerAwareCommand
 {
     protected function configure()
@@ -44,7 +43,6 @@ class GetDataCommand extends ContainerAwareCommand
         $priceHistory = $this->getContainer()->get('price_history.customer_repository');
         
         $checker = new UrlChecker();
-        $priceChecker = new DateChecker();
 
         $shopData = $getPageData->getShopData($id);
         $shopName = $getShopInfo->getShopInfo($id)->getShopName();
@@ -53,6 +51,9 @@ class GetDataCommand extends ContainerAwareCommand
 
         $getter = new $controller();
         $count = 0;
+
+        $em = $this->getContainer()->get('doctrine')->getManager();
+
         foreach ($shopData as $item) {
             $count++;
             echo "\nImporting ".$count." product...\n";
@@ -62,30 +63,51 @@ class GetDataCommand extends ContainerAwareCommand
                 $existingProduct = $product->findOneBy(['product_page_link_id' => $item]);
 
                 if ($existingProduct) {
-                    $output->writeln("\nFailed to insert product! This product already exsists.\nID: ".$item->getId());
+                    $output->writeln(
+                        "\nFailed to insert product! This product already exsists.\nID: ".$item->getId()
+                    );
                     $price = $getter->getPrice($link);
+                    $priceDate = $priceHistory->findOneBy(
+                        ['productId' => $existingProduct, 'dateAdded' => date("Y-m-d")]
+                    );
 
-                    $priceDate = $priceHistory->findOneByProductId($existingProduct);
-
-                    if ($priceChecker->isNew($priceDate->getDateAdded())) {
+                    if (!$priceDate) {
                         $insertProductData->insertProductPrice($existingProduct, $price);
                         echo "\nProduct price was added to the history!";
-                    } else {
-                        echo "\nToday's product price already exsist in the history!";
                     }
+
+                    $token = $getter->getToken($link);
+                    $currency = $getter->getCurrency($link);
+
+                    $existingProduct->setToken($token);
+                    $existingProduct->setCurrencyId($currency);
+
+                    $em->persist($existingProduct);
+                    $em->flush();
+
                     continue;
                 }
                 $img = $getter->getImage($link);
                 $desc = $getter->getDescription($link);
                 $price = $getter->getPrice($link);
                 $title = $getter->getTitle($link);
-                $insertedProduct = $insertProductData->insertProduct($id, $item, $title, $price, $desc, $img);
+                $token = $getter->getToken($link);
+                $currency = $getter->getCurrency($link);
+                $insertedProduct = $insertProductData->insertProduct(
+                    $id,
+                    $item,
+                    $title,
+                    $price,
+                    $desc,
+                    $img,
+                    $token,
+                    $currency
+                );
                 $output->writeln(
                     "Title: " . $title . "\nPrice: " . $price . "\nDescription: " . $desc . "\nImage URL: "
                     . $img . "\n ******************** \n"
                 );
                 $insertProductData->insertProductPrice($insertedProduct, $price);
-
             }
         }
     }
