@@ -41,8 +41,7 @@ class SurfHouse implements ImportInterface
 
     public function mapCategoryName($categoryName)
     {
-        switch($categoryName)
-        {
+        switch ($categoryName) {
             case "Vandenlentės":
                 return 0;
                 break;
@@ -72,34 +71,48 @@ class SurfHouse implements ImportInterface
         return $this->getProductTitle($this->template->CrawlerShortener($pageLink));
     }
 
-    protected function getCategoriesLinks( Crawler $crawler )
+    public function getToken($link)
     {
-        $links = $crawler->filter( 'div#menu_oc > ul > li > a' )->each( function ( Crawler $node ) {
+        $lastSlashIndex = strripos($link, "/");
+
+        $token = substr($link, $lastSlashIndex + 1, strlen($link) - $lastSlashIndex);
+
+        return $token;
+    }
+
+    public function getCurrency($pageLink)
+    {
+        return $this->getProductCurrency($this->template->CrawlerShortener($pageLink));
+    }
+
+    protected function getCategoriesLinks(Crawler $crawler)
+    {
+        $links = $crawler->filter('div#menu_oc > ul > li > a')->each(function (Crawler $node) {
             return $node->link()->getUri();
         });
 
-        return array_values( $links );
+        return array_values($links);
     }
 
-    protected function getCategoryTitle( Crawler $crawler )
+    protected function getCategoryTitle(Crawler $crawler)
     {
-        $title = $crawler->filter( 'ul.breadcrumbs > li:nth-child(2)' )->text();
+        $title = $crawler->filter('ul.breadcrumbs > li:nth-child(2)')->text();
 
         return $title;
     }
 
-    protected function getCategoryProducts( Crawler $crawler )
+    protected function getCategoryProducts(Crawler $crawler)
     {
-        $links = $crawler->filter( '#content div.image > a' )->each( function ( Crawler $node ) {
+        $links = $crawler->filter('#content div.image > a')->each(function (Crawler $node) {
             return $node->link()->getUri();
         });
 
-        return array_values( $links );
+        return array_values($links);
     }
 
-    protected function getPagesCount( Crawler $crawler )
+    protected function getPagesCount(Crawler $crawler)
     {
-        $pages = $crawler->filter( 'div.pagination div.results' )->text();
+        $pages = $crawler->filter('div.pagination div.results')->text();
         $result = explode("(", $pages);
 
         return str_replace(" Pages)", "", $result[1]);
@@ -108,28 +121,44 @@ class SurfHouse implements ImportInterface
     protected function getImageUrl(Crawler $crawler)
     {
 
-        $links = $crawler->filter( '#content div.image > a' )->each( function ( Crawler $node ) {
+        $links = $crawler->filter('#content div.image > a')->each(function (Crawler $node) {
             return $node->link()->getUri();
         });
 
         return $links[0];
     }
 
-    protected function getDescriptionText( Crawler $crawler )
+    protected function getDescriptionText(Crawler $crawler)
     {
-        $text = $crawler->filter( 'div.tab-content' )->text();
+        $text = $crawler->filter('div.tab-content')->text();
         return trim($text);
     }
-    protected function getProductPrice( Crawler $crawler )
+    protected function getProductPrice(Crawler $crawler)
     {
         $price = $crawler->filter(' #content div.price ')->text();
         return trim($price);
     }
 
-    protected function getProductTitle( Crawler $crawler )
+    protected function getProductTitle(Crawler $crawler)
     {
-        $title = $crawler->filter( '#content > h1' )->text();
+        $title = $crawler->filter('#content > h1')->text();
         return $title;
     }
 
+    /**
+     * @param Crawler $crawler
+     * @return int
+     */
+    protected function getProductCurrency(Crawler $crawler)
+    {
+        $fullPrice = $crawler->filter(' #content div.price ')->text();
+
+        if (stripos($fullPrice, '€') !== false || stripos($fullPrice, 'EUR') !== false) {
+            return 1;
+        } elseif (stripos($fullPrice, '$') !== false || stripos($fullPrice, 'USD') !== false) {
+            return 2;
+        }
+
+        return 0;
+    }
 }
