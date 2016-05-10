@@ -144,11 +144,7 @@ class SurfHouse implements ImportInterface
         $title = $crawler->filter('#content > h1')->text();
         return $title;
     }
-
-    /**
-     * @param Crawler $crawler
-     * @return int
-     */
+    
     protected function getProductCurrency(Crawler $crawler)
     {
         $fullPrice = $crawler->filter(' #content div.price ')->text();
