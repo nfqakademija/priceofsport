@@ -15,12 +15,4 @@ class DefaultController extends Controller
         return $this->render('FrontBundle:Default:index.html.twig');
     }
 
-    /**
-     * @Route("category/{category}/{subcategory}")
-     * @Route("category/{category}")
-     */
-    public function getProductsByCategory()
-    {
-        return $this->render('FrontBundle:Default:index.html.twig');
-    }
 }

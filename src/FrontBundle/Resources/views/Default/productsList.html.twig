@@ -9,10 +9,10 @@
             <div class="card">
                 <img class="card-img-top img-responsive center-block" src="{{ item.image }}" alt="{{ item.title }}">
                 <div class="card-block">
-                    <h4 class="card-title">{{ item.title }}</h4>
-                    <p class="card-text"></p>
-                    <span class="price pull-left">{{ item.price }}</span>
-                    <a href="product/{{ item.id }}" class="pull-right btn btn-primary">Plačiau</a>
+                    <h4 class="card-title">
+                        <a href="{{ absolute_url("/") }}product/{{ item.token }}">{{ item.title }}</a>
+                    </h4>
+                    <span class="price pull-left">{{ item.price }} Eur</span>
                     <div class="clearfix"></div>
                 </div>
             </div>

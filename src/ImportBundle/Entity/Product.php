@@ -87,6 +87,11 @@ class Product
     private $currencyId;
 
     /**
+     * @ORM\OneToMany(targetEntity="PriceHistory", mappedBy="product_id")
+     */
+    private $prices;
+
+    /**
      * Get id
      *
      * @return int
@@ -309,5 +314,15 @@ class Product
     public function getCurrencyId()
     {
         return $this->currencyId;
+    }
+
+    /**
+     * Get prices
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPrices()
+    {
+        return $this->prices;
     }
 }

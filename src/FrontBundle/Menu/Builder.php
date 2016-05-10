@@ -19,7 +19,7 @@ class Builder implements ContainerAwareInterface
         $current_uri = $this->container->get('request')->getRequestUri();
         foreach($categories as $key => $value)
         {
-            $uri = '/'.$value->getToken();
+            $uri = '/category/'.$value->getToken();
             $menu->addChild($value->getId(), array(
                 'uri' => $uri,
                 'attributes' => array('class' => 'nav-item'),
@@ -31,12 +31,12 @@ class Builder implements ContainerAwareInterface
             $childs = $em->getRepository('FrontBundle:Categories')->findByParent($value->getId());
             foreach($childs as $child_key => $child_value)
             {
-                $uri = '/'.$value->getToken().'/'.$child_value->getToken();
+                $uri = '/category/'.$value->getToken().'/'.$child_value->getToken();
                 $menu[$value->getId()]->addChild($child_value->getId(), array(
                     'uri' => $uri,
-                    'attributes' => array('class' => 'nav-item'),
+                    'attributes' => array('class' => 'nav-item-2'),
                     'label' => $child_value->getName(),
-                    'linkAttributes' => array('class' => 'nav-link')
+                    'linkAttributes' => array('class' => 'nav-link-2')
                 ));
                 if($current_uri == $uri)
                 {
