@@ -39,12 +39,22 @@ class ProductsController extends Controller
                         foreach ($productPageLink as $k => $v) {
                             $productsObj[] = $v->getProducts();
                         }
+<<<<<<< HEAD
+
+                        $paginator  = $this->get('knp_paginator');
+                        $pagination = $paginator->paginate(
+                            $productsObj,
+                            $this->get('request')->query->getInt('page', 1),
+                            20  /*limit per page*/
+                        );
+=======
+>>>>>>> f53faeb41ee3805355b9baf621f4b62ffd546edb
 
                         $params = [
                             'categoryId' => $categoryObj->getId(),
                             'subcategoryId' => $subcategoryObj->getId(),
                             'pageTitle' => $subcategoryObj->getName() . " - " . $categoryObj->getName(),
-                            'products' => $productsObj
+                            'products' => $pagination
                         ];
                     } else
                     {
@@ -70,10 +80,17 @@ class ProductsController extends Controller
                         }
                     }
 
+                    $paginator  = $this->get('knp_paginator');
+                    $pagination = $paginator->paginate(
+                        $productsObj,
+                        $this->get('request')->query->getInt('page', 1),
+                        20  /*limit per page*/
+                    );
+
                     $params = [
                         'categoryId' => $categoryObj->getId(),
                         'pageTitle' => $categoryObj->getName(),
-                        'products' => $productsObj
+                        'products' => $pagination
                     ];
                 }
             } else
