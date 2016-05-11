@@ -95,10 +95,16 @@ class ProductsController extends Controller
                 'token' => $token
             ));
         //var_dump($product);
+        $prices = $this->getDoctrine()
+            ->getRepository('ImportBundle:PriceHistory')
+            ->findByProductId($product);
 
         $params = [
-            'product' => $product
+            'product' => $product,
+            'prices' => $prices,
+            'minPrice' => min($prices)
         ];
+
         return $this->render('FrontBundle:Default:productItem.html.twig', $params);
     }
 
@@ -114,13 +120,35 @@ class ProductsController extends Controller
             ->findOneBy(array(
                 'token' => $token
             ));
-        $prices = $product->getTitle();
 
-        print_r($prices);
-        exit();
+        $prices = $this->getDoctrine()
+            ->getRepository('ImportBundle:PriceHistory')
+            ->findByProductId($product);
+        $item = [
+            'cols' =>
+            array(
+                array(
+                    'id' => '',
+                    'label' => 'Data',
+                    'pattern' => '',
+                    'type' => 'string'
+                ),
+                array(
+                    'id' => '',
+                    'label' => 'Kaina',
+                    'pattern' => '',
+                    'type' => 'number'
+                )
+            ),
+        ];
+        foreach($prices as $value) {
+            $item['rows'][]['c'] = array(array('v' => $value->getDateAdded(), 'f' => ''), array('v' => $value->getPrice(), 'f' => ''));
+        }
 
+        //echo "<pre>";
+        //echo print_r($item);
 
-        $response = new Response(json_encode($prices));
+        $response = new Response(json_encode($item));
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
