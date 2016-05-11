@@ -16,6 +16,9 @@ class ProductsController extends Controller
      */
     public function getProductsList($category_token = null, $subcategory_token = null)
     {
+        $em = $this->getDoctrine()->getEntityManager();
+        $repository = $em->getRepository('ImportBundle:ProductPageLink');
+
         if(isset($category_token))
         {
             $categoryObj = $this->getCategoryByToken($category_token);
@@ -26,8 +29,7 @@ class ProductsController extends Controller
                     $subcategoryObj = $this->getSubCategoryByToken($categoryObj->getId(), $subcategory_token);
                     if($subcategoryObj)
                     {
-                        $productPageLink = $this->getDoctrine()
-                            ->getRepository('ImportBundle:ProductPageLink')
+                        $productPageLink = $repository
                             ->findBy(array(
                                 'categoryId' => $subcategoryObj->getId()
                             ));
@@ -37,7 +39,6 @@ class ProductsController extends Controller
                         foreach ($productPageLink as $k => $v) {
                             $productsObj[] = $v->getProducts();
                         }
-                        //var_dump($productsObj);
 
                         $params = [
                             'categoryId' => $categoryObj->getId(),
@@ -53,17 +54,14 @@ class ProductsController extends Controller
                     }
                 } else
                 {
-                    //var_dump($this->getSubCategoryByParent($categoryObj->getId()));
                     $categories = $this->getSubCategoryByParent($categoryObj->getId());
 
                     foreach($categories as $value) {
-                        $productPageLink[] = $this->getDoctrine()
-                            ->getRepository('ImportBundle:ProductPageLink')
+                        $productPageLink[] = $repository
                             ->findBy(array(
                                 'categoryId' => $value->getId()
                             ));
                     }
-                    //var_dump($productPageLink);
 
                     $productsObj = array();
                     foreach ($productPageLink as $value) {
@@ -96,15 +94,15 @@ class ProductsController extends Controller
      */
     public function getProductItem($token)
     {
-        $product = $this->getDoctrine()
-            ->getRepository('ImportBundle:Product')
-            ->findOneBy(array(
-                'token' => $token
-            ));
-        //var_dump($product);
-        $prices = $this->getDoctrine()
-            ->getRepository('ImportBundle:PriceHistory')
-            ->findByProductId($product);
+        $em = $this->getDoctrine()->getEntityManager();
+        $repository = $em->getRepository('ImportBundle:Product');
+
+        $product = $repository->findOneBy(array(
+            'token' => $token
+        ));
+
+        $repository = $em->getRepository('ImportBundle:PriceHistory');
+        $prices = $repository->findByProductId($product);
 
         $params = [
             'product' => $product,
@@ -116,58 +114,14 @@ class ProductsController extends Controller
     }
 
     /**
-     *
-     * @Route ("product/{token}/json")
-     *
-     */
-    public function getProductPricesJson($token)
-    {
-        $product = $this->getDoctrine()
-            ->getRepository('ImportBundle:Product')
-            ->findOneBy(array(
-                'token' => $token
-            ));
-
-        $prices = $this->getDoctrine()
-            ->getRepository('ImportBundle:PriceHistory')
-            ->findByProductId($product);
-        $item = [
-            'cols' =>
-            array(
-                array(
-                    'id' => '',
-                    'label' => 'Data',
-                    'pattern' => '',
-                    'type' => 'string'
-                ),
-                array(
-                    'id' => '',
-                    'label' => 'Kaina',
-                    'pattern' => '',
-                    'type' => 'number'
-                )
-            ),
-        ];
-        foreach($prices as $value) {
-            $item['rows'][]['c'] = array(array('v' => $value->getDateAdded(), 'f' => ''), array('v' => $value->getPrice(), 'f' => ''));
-        }
-
-        //echo "<pre>";
-        //echo print_r($item);
-
-        $response = new Response(json_encode($item));
-        $response->headers->set('Content-Type', 'application/json');
-
-        return $response;
-    }
-
-    /**
      * @param $token
      */
     public function getCategoryByToken($token)
     {
-        $obj = $this->getDoctrine()
-            ->getRepository('FrontBundle:Categories')
+        $em = $this->getDoctrine()->getEntityManager();
+        $repository = $em->getRepository('FrontBundle:Categories');
+
+        $obj = $repository
             ->findOneBy(array(
                 'parent' => 0,
                 'token' => $token
@@ -178,8 +132,10 @@ class ProductsController extends Controller
 
     public function getSubCategoryByToken($categoryId, $token)
     {
-        $obj = $this->getDoctrine()
-            ->getRepository('FrontBundle:Categories')
+        $em = $this->getDoctrine()->getEntityManager();
+        $repository = $em->getRepository('FrontBundle:Categories');
+
+        $obj = $repository
             ->findOneBy(array(
                 'parent' => $categoryId,
                 'token' => $token
@@ -190,8 +146,10 @@ class ProductsController extends Controller
 
     public function getSubCategoryByParent($categoryId)
     {
-        $obj = $this->getDoctrine()
-            ->getRepository('FrontBundle:Categories')
+        $em = $this->getDoctrine()->getEntityManager();
+        $repository = $em->getRepository('FrontBundle:Categories');
+
+        $obj = $repository
             ->findBy(array(
                 'parent' => $categoryId
             ));
