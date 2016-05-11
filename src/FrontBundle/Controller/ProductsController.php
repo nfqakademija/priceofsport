@@ -107,19 +107,18 @@ class ProductsController extends Controller
      * @Route ("product/{token}/json")
      *
      */
-    public function getProductItemJson($token)
+    public function getProductPricesJson($token)
     {
         $product = $this->getDoctrine()
             ->getRepository('ImportBundle:Product')
             ->findOneBy(array(
                 'token' => $token
             ));
-        $prices = $product->getPrices();
+        $prices = $product->getTitle();
 
-        var_dump($prices);
-        /*$normalizers = new \Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer();
-        $norm = $normalizers->normalize($product);
-        print_r($norm);*/
+        print_r($prices);
+        exit();
+
 
         $response = new Response(json_encode($prices));
         $response->headers->set('Content-Type', 'application/json');
