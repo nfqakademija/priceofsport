@@ -2,26 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3883f226-b37b-4fb2-b330-22d4cb5dd7af" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/FrontBundle/Resources/views/Default/productItem.html.twig" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/npm-debug.log" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gulpfile.js" afterPath="$PROJECT_DIR$/Gulpfile.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/style/main.scss" afterPath="$PROJECT_DIR$/app/Resources/style/main.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/Resources/views/base.html.twig" afterPath="$PROJECT_DIR$/app/Resources/views/base.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower.json" afterPath="$PROJECT_DIR$/bower.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/FrontBundle/Controller/DefaultController.php" afterPath="$PROJECT_DIR$/src/FrontBundle/Controller/DefaultController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/FrontBundle/Controller/ProductsController.php" afterPath="$PROJECT_DIR$/src/FrontBundle/Controller/ProductsController.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/FrontBundle/Menu/Builder.php" afterPath="$PROJECT_DIR$/src/FrontBundle/Menu/Builder.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/FrontBundle/Resources/views/Default/index.html.twig" afterPath="$PROJECT_DIR$/src/FrontBundle/Resources/views/Default/index.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/FrontBundle/Resources/views/Default/productsList.html.twig" afterPath="$PROJECT_DIR$/src/FrontBundle/Resources/views/Default/productsList.html.twig" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ImportBundle/Command/GetLinksCommand.php" afterPath="$PROJECT_DIR$/src/ImportBundle/Command/GetLinksCommand.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ImportBundle/Entity/Product.php" afterPath="$PROJECT_DIR$/src/ImportBundle/Entity/Product.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ImportBundle/Entity/ProductPageLink.php" afterPath="$PROJECT_DIR$/src/ImportBundle/Entity/ProductPageLink.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ImportBundle/Entity/Shop.php" afterPath="$PROJECT_DIR$/src/ImportBundle/Entity/Shop.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ImportBundle/Shops/BoardSports.php" afterPath="$PROJECT_DIR$/src/ImportBundle/Shops/BoardSports.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ImportBundle/Shops/SurfHouse.php" afterPath="$PROJECT_DIR$/src/ImportBundle/Shops/SurfHouse.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ImportBundle/Shops/xPro.php" afterPath="$PROJECT_DIR$/src/ImportBundle/Shops/xPro.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="priceofsport.iws" />
     <ignored path=".idea/workspace.xml" />
