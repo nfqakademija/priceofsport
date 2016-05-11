@@ -4,17 +4,36 @@ namespace FrontBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
     /**
      * @Route("/")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
+        $form = $this->createFormBuilder()
+            ->add('keyword', 'Symfony\Component\Form\Extension\Core\Type\SearchType')
+            ->add('send', 'Symfony\Component\Form\Extension\Core\Type\SubmitType')
+            ->getForm();
+
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $keyword = $form->getData()['keyword'];
+
+            return $this->redirectToRoute('search_results', array(
+                'keyword' => $keyword,
+            ));
+        }
+
         $params = [
             'randomProducts' => $this->getRandomProducts(12),
-            'shops' => $this->getShops()
+            'shops' => $this->getShops(),
+            'form' => $form->createView()
         ];
 
         return $this->render('FrontBundle:Default:index.html.twig', $params);

@@ -81,6 +81,7 @@ class GetDataCommand extends ContainerAwareCommand
 
                     $existingProduct->setToken($token);
                     $existingProduct->setCurrencyId($currency);
+                    $existingProduct->setPrice($price);
 
                     $em->persist($existingProduct);
                     $em->flush();

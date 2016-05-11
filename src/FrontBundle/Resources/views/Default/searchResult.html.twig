@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title "kkk" %}
+
+{% block body %}
+
+<h3>Paieškoję, mes Jums radome...</h3>
+    <p>Paieškos raktas: <b>{{ keyword }}</b></p>
+
+<div class="row row-eq-height">
+    {% for item in searchResults %}
+        <div class="col-xs-6 col-sm-4">
+            <div class="card">
+                <img class="card-img-top img-responsive center-block" src="{{ item.image }}" alt="{{ item.title }}">
+                <div class="card-block">
+                    <h4 class="card-title">
+                        <a href="{{ absolute_url("/") }}product/{{ item.token }}">{{ item.title }}</a>
+                    </h4>
+                    <p class="card-text"></p>
+                    <span class="price pull-left">{{ item.price }} Eur</span>
+                    <a href="{{ absolute_url("/") }}product/{{ item.token }}" class="pull-right btn btn-primary">Plačiau</a>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
