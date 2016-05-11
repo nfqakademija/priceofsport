@@ -47,9 +47,21 @@ services:
             factory_method: getRepository
             arguments:
                 - "ImportBundle:Product"
+
     price_history.customer_repository:
             class: Doctrine\ORM\EntityRepository
             factory_service: doctrine.orm.default_entity_manager
             factory_method: getRepository
             arguments:
                 - "ImportBundle:PriceHistory"
+
+    notification.customer_repository:
+            class: Doctrine\ORM\EntityRepository
+            factory_service: doctrine.orm.default_entity_manager
+            factory_method: getRepository
+            arguments:
+                - "ImportBundle:Notification"
+
+    notification.data.parser:
+        class: ImportBundle\Services\NotificationUsers
+        arguments: ["@doctrine.orm.entity_manager", "@notification.customer_repository"]

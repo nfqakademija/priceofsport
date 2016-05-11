@@ -48,7 +48,7 @@ class GetLinksCommand extends ContainerAwareCommand
                     // $productLink,
                     // $getter->mapCategoryName($categoryName)
                     //);
-                    $message = $categoryName." ".$getter->mapCategoryName($categoryName);
+                    $message = $categoryName." ".$productLink." ".$getter->mapCategoryName($categoryName);
                     $output->writeln($message);
                 }
             }
