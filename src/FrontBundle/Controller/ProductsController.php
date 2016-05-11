@@ -39,6 +39,7 @@ class ProductsController extends Controller
                         foreach ($productPageLink as $k => $v) {
                             $productsObj[] = $v->getProducts();
                         }
+<<<<<<< HEAD
 
                         $paginator  = $this->get('knp_paginator');
                         $pagination = $paginator->paginate(
@@ -46,6 +47,8 @@ class ProductsController extends Controller
                             $this->get('request')->query->getInt('page', 1),
                             20  /*limit per page*/
                         );
+=======
+>>>>>>> f53faeb41ee3805355b9baf621f4b62ffd546edb
 
                         $params = [
                             'categoryId' => $categoryObj->getId(),
