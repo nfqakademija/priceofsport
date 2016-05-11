@@ -339,10 +339,6 @@ class BoardSports implements ImportInterface
         return $title;
     }
 
-    /**
-     * @param Crawler $crawler
-     * @return int
-     */
     protected function getProductCurrency(Crawler $crawler)
     {
         $fullPrice = $crawler->filter(' #container div.product-info div.price ')->text();

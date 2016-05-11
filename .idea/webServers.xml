@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="bb541362-ce3b-486c-ae84-74c3651486b5" name="Stalcius" url="http://472266.s.dedikuoti.lt">
+        <fileTransfer host="472266.s.dedikuoti.lt" port="22" accessType="SFTP" username="root">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+      <webServer id="f5a1e5f0-7a0a-49d8-b157-0e9a4069630d" name="Darius" url="http://srv.balticroof.lt">
+        <fileTransfer host="srv.balticroof.lt" port="21" username="darius">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

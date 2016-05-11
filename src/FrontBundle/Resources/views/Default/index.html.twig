@@ -1,11 +1,64 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <div class="jumbotron" style="background: url('http://www.mrwallpaper.com/wallpapers/extreme-skiing.jpg') center center fixed">
+        <div class="row" >
+            <div class="col-lg-12">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Ieškoti...">
+                     <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        {#<div class="row pull-right">#}
+            {#<div class="col-md-12">#}
+                {#{% for shop in shops %}#}
+                    {#<div class="col-md-6">#}
+                        {#<a href="{{ shop.shopLink }}" target="_blank" title="{{ shop.shopName }}"><img class="card-img-top img-responsive center-block" src="{{ shop.logo }}" alt="{{ shop.shopName }}"></a>#}
+                    {#</div>#}
+                {#{% endfor %}#}
+            {#</div>#}
+        {#</div>#}
+    </div>
+
     <div class="jumbotron">
         <div class="container">
-            <h1>Hello, world!</h1>
-            <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-            <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+            <h2><i class="glyphicon glyphicon-star"></i> <b>Rekomenduojamos</b> prekės</h2>
+            <hr />
+            <div class="row row-eq-height">
+            {% for item in randomProducts %}
+                <div class="col-xs-6 col-sm-4">
+                    <div class="card">
+                        <img class="card-img-top img-responsive center-block" src="{{ item.image }}" alt="{{ item.title }}">
+                        <div class="card-block">
+                            <h4 class="card-title">{{ item.title }}</h4>
+                            <p class="card-text"></p>
+                            <span class="price pull-left">{{ item.price }}</span>
+                            <a href="product/{{ item.id }}" class="pull-right btn btn-primary">Plačiau</a>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="jumbotron">
+        <div class="container">
+            <h2><i class="glyphicon glyphicon-shopping-cart"></i> <b>Parduotuvės</b></h2>
+            <hr />
+            <div class="row">
+                {% for shop in shops %}
+                    <div class="col-xs-6 col-sm-4">
+                        <a href="{{ shop.shopLink }}" target="_blank" title="{{ shop.shopName }}"><img class="card-img-top img-responsive center-block" src="{{ shop.logo }}" alt="{{ shop.shopName }}"></a>
+                        <div class="card-blok">
+                            {{ shop.description }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}
