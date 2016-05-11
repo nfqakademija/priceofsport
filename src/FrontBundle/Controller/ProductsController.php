@@ -5,13 +5,14 @@ namespace FrontBundle\Controller;
 use Proxies\__CG__\ImportBundle\Entity\ProductPageLink;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductsController extends Controller
 {
 
     /**
-     * @Route ("{category_token}/{subcategory_token}")
-     * @Route ("{category}")
+     * @Route ("category/{category_token}/{subcategory_token}")
+     * @Route ("category/{category}")
      */
     public function getProductsList($category_token = null, $subcategory_token = null)
     {
@@ -25,11 +26,18 @@ class ProductsController extends Controller
                     $subcategoryObj = $this->getSubCategoryByToken($categoryObj->getId(), $subcategory_token);
                     if($subcategoryObj)
                     {
-                        $productsObj = $this->getDoctrine()
-                            ->getRepository('ImportBundle:Product')
+                        $productPageLink = $this->getDoctrine()
+                            ->getRepository('ImportBundle:ProductPageLink')
                             ->findBy(array(
-                                'shop_id' => $subcategoryObj->getId()
+                                'categoryId' => $subcategoryObj->getId()
                             ));
+
+
+                        $productsObj = array();
+                        foreach ($productPageLink as $k => $v) {
+                            $productsObj[] = $v->getProducts();
+                        }
+                        //var_dump($productsObj);
 
                         $params = [
                             'categoryId' => $categoryObj->getId(),
@@ -55,11 +63,7 @@ class ProductsController extends Controller
                     $productsObj = array();
                     foreach ($productPageLink as $k => $v) {
                         $productsObj[] = $v->getProducts();
-                        //var_dump($v->getProducts()->getTitle());
-                        //exit();
                     }
-
-                    //var_dump($productsObj);
 
                     $params = [
                         'categoryId' => $categoryObj->getId(),
@@ -75,6 +79,51 @@ class ProductsController extends Controller
             }
             return $this->render('FrontBundle:Default:productsList.html.twig', $params);
         }
+    }
+
+
+    /**
+     *
+     * @Route ("product/{token}")
+     *
+     */
+    public function getProductItem($token)
+    {
+        $product = $this->getDoctrine()
+            ->getRepository('ImportBundle:Product')
+            ->findOneBy(array(
+                'token' => $token
+            ));
+        //var_dump($product);
+
+        $params = [
+            'product' => $product
+        ];
+        return $this->render('FrontBundle:Default:productItem.html.twig', $params);
+    }
+
+    /**
+     *
+     * @Route ("product/{token}/json")
+     *
+     */
+    public function getProductPricesJson($token)
+    {
+        $product = $this->getDoctrine()
+            ->getRepository('ImportBundle:Product')
+            ->findOneBy(array(
+                'token' => $token
+            ));
+        $prices = $product->getTitle();
+
+        print_r($prices);
+        exit();
+
+
+        $response = new Response(json_encode($prices));
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
     }
 
     /**

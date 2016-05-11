@@ -49,14 +49,6 @@ class ProductPageLink
      */
     private $products;
 
-    /*public function __construct()
-    {
-        //$this->products = new ArrayCollection();
-        //$this->products = $products;
-    }*/
-
-
-
     /**
      * Get id
      *
