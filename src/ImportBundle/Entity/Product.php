@@ -39,7 +39,7 @@ class Product
     /**
      * @var int
      *
-     * @ORM\ManyToOne(targetEntity="ProductPageLink", inversedBy="products")
+     * @ORM\OneToOne(targetEntity="ProductPageLink", inversedBy="products")
      * @ORM\JoinColumn(name="product_page_link_id", referencedColumnName="id")
      */
     private $product_page_link_id;
