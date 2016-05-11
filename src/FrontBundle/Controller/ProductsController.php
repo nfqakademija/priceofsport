@@ -53,16 +53,23 @@ class ProductsController extends Controller
                     }
                 } else
                 {
-                    $productPageLink = $this->getDoctrine()
-                        ->getRepository('ImportBundle:ProductPageLink')
-                        ->findBy(array(
-                            'categoryId' => $categoryObj->getId()
-                        ));
+                    //var_dump($this->getSubCategoryByParent($categoryObj->getId()));
+                    $categories = $this->getSubCategoryByParent($categoryObj->getId());
 
+                    foreach($categories as $value) {
+                        $productPageLink[] = $this->getDoctrine()
+                            ->getRepository('ImportBundle:ProductPageLink')
+                            ->findBy(array(
+                                'categoryId' => $value->getId()
+                            ));
+                    }
+                    //var_dump($productPageLink);
 
                     $productsObj = array();
-                    foreach ($productPageLink as $k => $v) {
-                        $productsObj[] = $v->getProducts();
+                    foreach ($productPageLink as $value) {
+                        foreach($value as $v) {
+                            $productsObj[] = $v->getProducts();
+                        }
                     }
 
                     $params = [
@@ -176,6 +183,17 @@ class ProductsController extends Controller
             ->findOneBy(array(
                 'parent' => $categoryId,
                 'token' => $token
+            ));
+
+        return $obj;
+    }
+
+    public function getSubCategoryByParent($categoryId)
+    {
+        $obj = $this->getDoctrine()
+            ->getRepository('FrontBundle:Categories')
+            ->findBy(array(
+                'parent' => $categoryId
             ));
 
         return $obj;
