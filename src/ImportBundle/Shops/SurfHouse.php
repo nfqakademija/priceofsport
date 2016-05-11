@@ -136,7 +136,7 @@ class SurfHouse implements ImportInterface
     protected function getProductPrice(Crawler $crawler)
     {
         $price = $crawler->filter(' #content div.price ')->text();
-        return trim($price);
+        return toFloat($price);
     }
 
     protected function getProductTitle(Crawler $crawler)
@@ -156,5 +156,20 @@ class SurfHouse implements ImportInterface
         }
 
         return 0;
+    }
+    protected function toFloat($num) {
+        $dotPos = strrpos($num, '.');
+        $commaPos = strrpos($num, ',');
+        $sep = (($dotPos > $commaPos) && $dotPos) ? $dotPos :
+            ((($commaPos > $dotPos) && $commaPos) ? $commaPos : false);
+
+        if (!$sep) {
+            return floatval(preg_replace("/[^0-9]/", "", $num));
+        }
+
+        return floatval(
+            preg_replace("/[^0-9]/", "", substr($num, 0, $sep)) . '.' .
+            preg_replace("/[^0-9]/", "", substr($num, $sep+1, strlen($num)))
+        );
     }
 }
