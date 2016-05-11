@@ -21,15 +21,10 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/")
+     * @Route("/apie-projekta")
      */
-    public function headerMenu() {
-        $params = [
-            'randomProducts' => $this->getRandomProducts(12),
-            'shops' => $this->getShops()
-        ];
-
-        return $this->render('base.html.twig', $params);
+    public function aboutContent() {
+        return $this->render('FrontBundle:Default:about.html.twig');
     }
 
 
