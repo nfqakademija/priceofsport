@@ -310,4 +310,5 @@ class Product
     {
         return $this->currencyId;
     }
+
 }

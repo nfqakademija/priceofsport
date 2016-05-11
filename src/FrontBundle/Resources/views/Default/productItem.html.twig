@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title "kkk" %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-md-5 col-sm-12 col-xs-12">
+            <img class="img-responsive" src="{{ product.image }}" alt="{{ product.title }}">
+        </div>
+        <div class="col-md-7 col-sm-12 col-xs-12">
+            <h1>{{ product.title }}</h1>
+            <p>{{ product.description }}</p>
+            <div class="price">
+                Kaina: <span>{{ product.price }} Eur</span>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            /*var jsonData = $.ajax({
+                url: "http://vilnius5.local/product/32-prolimit-fx/json",
+                dataType: "json",
+                async: false
+            }).responseText;
+
+            var data = new google.visualization.DataTable(jsonData);*/
+            var data = google.visualization.arrayToDataTable([
+                ['Data', 'Kaina'],
+                {% for item in prices %}
+                ['{{ item.dateAdded }}',  {{ item.price }}],
+                {% endfor %}
+            ]);
+
+            var options = {
+                title: 'Prekes istorija',
+                legend: {position: 'bottom', maxLines: 3},
+                hAxis: {title: 'Data',  titleTextStyle: {color: '#333'}},
+                vAxis: {minValue: {{ minPrice.price }}}
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+    </script>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12" id="chart_div" style="height: 250px;"></div>
+    </div>
+
+{% endblock %}
