@@ -35,6 +35,19 @@ class Shop
      */
     private $shopName;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=500)
+     */
+    private $description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="logo", type="string", length=500)
+     */
+    private $logo;
 
     /**
      * Get id
@@ -91,5 +104,53 @@ class Shop
         $this->shopName = $shopName;
 
         return $this;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Shop
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set logo
+     *
+     * @param string $logo
+     *
+     * @return Shop
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
+
+        return $this;
+    }
+
+    /**
+     * Get logo
+     *
+     * @return string
+     */
+    public function getLogo()
+    {
+        return $this->logo;
     }
 }

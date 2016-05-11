@@ -35,6 +35,19 @@ class Shop
      */
     private $shopName;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=500)
+     */
+    private $description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="logo", type="string", length=500)
+     */
+    private $logo;
 
     /**
      * Get id

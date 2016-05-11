@@ -36,12 +36,12 @@ class GetLinksCommand extends ContainerAwareCommand
         $controller = "ImportBundle\\Shops\\".$shopName;
         $getter = new $controller();
 
-        foreach($getter->getCategories($shopLink) as $link) {
+        foreach ($getter->getCategories($shopLink) as $link) {
             $pages = $getter->getPages($link);
             for ($i = 1; $i <= $pages; $i++) {
                 $productsLinks = $getter->getLinks($link . $getter->getPaginationPrefix($shopId, $i));
                 foreach ($productsLinks as $productLink) {
-                   $categoryName = $getter->getCategoryName($productLink);
+                    $categoryName = $getter->getCategoryName($productLink);
                     //$message = $categoryName." ".$getter->mapCategoryName($categoryName)." ".$insertShopInfo->insertProductLink($shopId, $productLink, $getter->mapCategoryName($categoryName));
                     $message = $categoryName." ".$getter->mapCategoryName($categoryName);
                     $output->writeln($message);
@@ -50,5 +50,4 @@ class GetLinksCommand extends ContainerAwareCommand
         }
 
     }
-
 }
