@@ -33,6 +33,15 @@
     font-weight: bold;
   }
 
+
+.product-item .price {
+  font-size: 18px;
+  font-family: 'Dosis', sans-serif;
+}
+  .product-item .price > span {
+    color:#f23f1b;
+  }
+
 .card {
   position: relative;
   display: block;

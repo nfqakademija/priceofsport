@@ -5,3 +5,6 @@
 
 - name: Force update database schema
   shell: app/console doctrine:schema:update --force --env=prod --no-debug chdir={{ deploy_helper.new_release_path }}
+
+- cron: name="Import product data and price history 1" hour="2" job="/home/priceofsport/current/app/console --env=prod get:data 1 > /dev/null"
+- cron: name="Import product data and price history 2" hour="5" job="/home/priceofsport/current/app/console --env=prod get:data 2 > /dev/null"
