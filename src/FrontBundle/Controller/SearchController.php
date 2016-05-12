@@ -14,14 +14,12 @@ class SearchController extends Controller
      * @Route("/search-results/{keyword}", name="search_results")
      */
     public function searchResults($keyword) {
-
         $params = [
             'searchResults' => $this->getResultByKeyword($keyword),
             'keyword' => $keyword,
         ];
 
         return $this->render('FrontBundle:Default:searchResult.html.twig', $params);
-
     }
     function getResultByKeyword(string $keyword) {
         $em = $this->getDoctrine()->getManager();
