@@ -34,7 +34,6 @@ class ProductsController extends Controller
                                 'categoryId' => $subcategoryObj->getId()
                             ));
 
-
                         $productsObj = array();
                         foreach ($productPageLink as $k => $v) {
                             $productsObj[] = $v->getProducts();
@@ -46,8 +45,7 @@ class ProductsController extends Controller
                             $this->get('request')->query->getInt('page', 1),
                             20  /*limit per page*/
                         );
-
-
+                        
                         $params = [
                             'categoryId' => $categoryObj->getId(),
                             'subcategoryId' => $subcategoryObj->getId(),
