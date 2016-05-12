@@ -26,11 +26,17 @@
                     <h4 class="modal-title" id="myModalLabel">Noriu gauti pranešimą, kai nukris kainą</h4>
                 </div>
                 <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Uždaryti</button>
-                    <button type="button" class="btn btn-primary">Siųsti</button>
+                    <form action="{{ path('create_post') }}" method="post" name="notificationFrom2">
+                        <label>Kaina</label>
+                        {{ form_widget(postform.price, {'attr': {'class': 'form-control'}}) }}
+                        <br/>
+                        <label>El.paštas</label>
+                        {{ form_widget(postform.email, {'attr': {'class': 'form-control'}}) }}
+                        <br/>
+                        <p>
+                            <button type="submit" class="btn btn-primary">Saugoti</button>
+                        </p>
+                    </form>
                 </div>
             </div>
         </div>

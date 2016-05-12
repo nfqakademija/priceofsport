@@ -6,9 +6,41 @@ use Proxies\__CG__\ImportBundle\Entity\ProductPageLink;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Response;
+use FrontBundle\Form\NotificationType;
+use Symfony\Component\HttpFoundation\Request;
 
 class ProductsController extends Controller
 {
+
+    /**
+     * @Route( "/notification/add", name="create_post" )
+     *
+     */
+    public function createAction( Request $request )
+    {
+        $form = $this->createFormBuilder(new NotificationType());
+        if ( $request->isMethod( 'POST' ) ) {
+
+            $form->handleRequest($request);
+
+            if ( $form->isValid( ) ) {
+
+                $data = $form->getData();
+
+                $response['success'] = true;
+
+            }else{
+
+                $response['success'] = false;
+                $response['cause'] = 'whatever';
+
+            }
+
+            var_dump($response);
+
+            return new JsonResponse( $response );
+        }
+    }
 
     /**
      * @Route ("category/{category_token}/{subcategory_token}")
@@ -117,10 +149,13 @@ class ProductsController extends Controller
         $repository = $em->getRepository('ImportBundle:PriceHistory');
         $prices = $repository->findByProductId($product);
 
+        $postform = $this->createForm( new NotificationType(), array('product_id' => $product->getId()) );
+
         $params = [
             'product' => $product,
             'prices' => $prices,
-            'minPrice' => min($prices)
+            'minPrice' => min($prices),
+            'postform' => $postform->createView()
         ];
 
         return $this->render('FrontBundle:Default:productItem.html.twig', $params);
