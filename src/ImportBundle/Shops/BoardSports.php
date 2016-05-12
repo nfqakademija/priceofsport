@@ -72,33 +72,168 @@ class BoardSports implements ImportInterface
     public function mapCategoryName($categoryName)
     {
         switch ($categoryName) {
+            // Vandenlentes
+            case "Krepšiai":
+                return 39;
+                break;
+            case "Liemenės":
+                return 19;
+                break;
+            case "Šalmai":
+                return 27;
+                break;
+            case "Techniniai Rūbai":
+                return 41;
+                break;
+            case "Vandens Batai":
+                return 42;
+                break;
+            case "Vandens Pramogos":
+                return 43;
+                break;
+            case "Vandens Slidės":
+                return 44;
+                break;
             case "Vandenlentės":
-                return 0;
+                return 3;
+                break;
+            case "Apkaustai":
+                return 45;
+                break;
+            case "Hidrokostiumai":
+                return 46;
+                break;
+            case "Aksesuarai":
+                return 21;
+                break;
+            // Kaitai
+            case "Apkaustai":
+                return 48;
+                break;
+            case "Šalmai":
+                return 49;
                 break;
             case "Kaitai":
-                return 0;
+                return 50;
                 break;
+            case "Twin Tip lentos":
+                return 51;
+                break;
+            case "Hidro kostiumai":
+                return 52;
+                break;
+            case "Likros":
+                return 52;
+                break;
+            case "Neopreniniai batai":
+                return 48;
+                break;
+            case "Aksesuarai":
+                return 54;
+                break;
+            case "Krepšiai":
+                return 53;
+                break;
+            // Riedlentės
             case "Riedlentės":
-                return 0;
+                return 60;
                 break;
-            case "Surf":
-                return 0;
+            case "Apsaugos":
+                return 55;
                 break;
-            case "Laisvalaikio rūbai":
-                return 0;
+            case "Ašys":
+                return 56;
                 break;
+            case "Lentos":
+                return 57;
+                break;
+            case "Ratukai":
+                return 56;
+                break;
+            case "Aksesuarai":
+                return 58;
+                break;
+            // Surf / sup
+            case "Liemenės":
+                return 70;
+                break;
+            case "Šalmai":
+                return 69;
+                break;
+            case "SUP Lentos":
+                return 63;
+                break;
+            case "SURF Lentos":
+                return 63;
+                break;
+            case "Techniniai Rūbai":
+                return 64;
+                break;
+            case "Hidro kostiumai":
+                return 66;
+                break;
+            case "Neopreniniai batai":
+                return 68;
+                break;
+            case "Aksesuarai":
+                return 65;
+                break;
+            // Snieglentes
             case "Snieglentės":
-                return 0;
+                return 23;
+                break;
+            case "Apkaustai":
+                return 24;
+                break;
+            case "Batai":
+                return 25;
+                break;
+            case "Apranga":
+                return 61;
+                break;
+            case "Apsaugos":
+                return 26;
+                break;
+            case "Aksesuarai":
+                return 30;
+                break;
+            case "Slidinėjimo akiniai":
+                return 30;
+                break;
+            // Slides
+            case "Lazdos":
+                return 33;
                 break;
             case "Slidės":
-                return 0;
+                return 32;
+                break;
+            case "Apkaustai":
+                return 34;
+                break;
+            case "Batai":
+                return 35;
+                break;
+            case "Slidinėjimo apsaugos":
+                return 36;
+                break;
+            case "Apranga":
+                return 37;
+                break;
+            case "Aksesuarai":
+                return 38;
+                break;
+            case "Krepšiai":
+                return 39;
+                break;
+            case "Slidinėjimo akiniai":
+                return 40;
                 break;
         }
     }
 
     protected function getCategoriesLinks(Crawler $crawler)
     {
-        $links = $crawler->filter('div#menu > ul > li > a')->each(function (Crawler $node) {
+        $links = $crawler->filter('div#menu ul li div ul li > a')->each(function (Crawler $node) {
             if ($node->link()->getUri() != "http://bsonline.eu/isparduotuve") {
                 return $node->link()->getUri();
             }
@@ -111,7 +246,7 @@ class BoardSports implements ImportInterface
     {
         $pages = $crawler->filter('div#content .breadcrumb')->text();
         $result = explode(">", $pages);
-        $title = trim($result[1]);
+        $title = trim($result[2]);
 
         return $title;
     }

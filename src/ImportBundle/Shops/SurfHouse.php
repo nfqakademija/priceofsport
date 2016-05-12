@@ -42,11 +42,122 @@ class SurfHouse implements ImportInterface
     public function mapCategoryName($categoryName)
     {
         switch ($categoryName) {
-            case "Vandenlentės":
-                return 0;
+            // Kiteboarding
+            case "KITES":
+                return 50;
                 break;
-            case "Kaitai":
-                return 0;
+            case "BOARDS":
+                return 51;
+                break;
+            case "KITEBOARDING HARNESSES":
+                return 54;
+                break;
+            case "KITEBOARDING BAGS":
+                return 53;
+                break;
+            case "WETSUITS":
+                return 52;
+                break;
+            case "CLOTHES":
+                return 52;
+                break;
+            case "ACCESSORIES":
+                return 54;
+                break;
+
+            // Windsurfing
+            case "WINDSURFING BOARDS":
+                return 13;
+                break;
+            case "SAILS":
+                return 14;
+                break;
+            case "BOOMS":
+                return 16;
+                break;
+            case "MASTS":
+                return 15;
+                break;
+            case "WINDSURFING HARNESSES":
+                return 18;
+                break;
+            case "EXTENSIONS":
+                return 17;
+                break;
+            case "WETSUITS":
+                return 41;
+                break;
+            case "ACCESSORIES":
+                return 21;
+                break;
+            case "CLOTHES":
+                return 46;
+                break;
+            // Sup
+            case "SUP BOARDS":
+                return 63;
+                break;
+            case "PADDLES":
+                return 67;
+                break;
+            case "WETSUITS":
+                return 66;
+                break;
+            case "ACCESSORIES":
+                return 65;
+                break;
+            case "CLOTHES":
+                return 64;
+                break;
+            // Snowboarding
+            case "SNOWBOARDS":
+                return 23;
+                break;
+            case "BOOTS":
+                return 25;
+                break;
+            case "GOGGLES & LENSES":
+                return 28;
+                break;
+            case "PROTECTION":
+                return 26;
+                break;
+            case "CLOTHING":
+                return 61;
+                break;
+            case "TOOLS & WAX":
+                return 30;
+                break;
+            case "SNOWBOARDING ACCESSORIES":
+                return 30;
+                break;
+            // Longboarding
+            case "PROTECTIONS":
+                return 55;
+                break;
+            case "COMPLETES":
+                return 60;
+                break;
+            case "DECKS":
+                return 56;
+                break;
+            case "WHEELS":
+                return 56;
+                break;
+            case "BEARINGS":
+                return 56;
+                break;
+            case "BUSHINGS":
+                return 56;
+                break;
+            case "BOLTS/HARDWARE":
+                return 56;
+                break;
+            case "GLOVES/PUCKS":
+                return 56;
+                break;
+            case "CLOTHES":
+                return 59;
                 break;
         }
     }
@@ -87,7 +198,7 @@ class SurfHouse implements ImportInterface
 
     protected function getCategoriesLinks(Crawler $crawler)
     {
-        $links = $crawler->filter('div#menu_oc > ul > li > a')->each(function (Crawler $node) {
+        $links = $crawler->filter('div#menu_oc > ul > li > div > ul > li > a')->each(function (Crawler $node) {
             return $node->link()->getUri();
         });
 
@@ -96,7 +207,7 @@ class SurfHouse implements ImportInterface
 
     protected function getCategoryTitle(Crawler $crawler)
     {
-        $title = $crawler->filter('ul.breadcrumbs > li:nth-child(2)')->text();
+        $title = $crawler->filter('ul.breadcrumbs > li:nth-child(3)')->text();
 
         return $title;
     }
@@ -136,7 +247,7 @@ class SurfHouse implements ImportInterface
     protected function getProductPrice(Crawler $crawler)
     {
         $price = $crawler->filter(' #content div.price ')->text();
-        return toFloat($price);
+        return trim($price);
     }
 
     protected function getProductTitle(Crawler $crawler)
@@ -144,7 +255,7 @@ class SurfHouse implements ImportInterface
         $title = $crawler->filter('#content > h1')->text();
         return $title;
     }
-    
+
     protected function getProductCurrency(Crawler $crawler)
     {
         $fullPrice = $crawler->filter(' #content div.price ')->text();
@@ -156,20 +267,5 @@ class SurfHouse implements ImportInterface
         }
 
         return 0;
-    }
-    protected function toFloat($num) {
-        $dotPos = strrpos($num, '.');
-        $commaPos = strrpos($num, ',');
-        $sep = (($dotPos > $commaPos) && $dotPos) ? $dotPos :
-            ((($commaPos > $dotPos) && $commaPos) ? $commaPos : false);
-
-        if (!$sep) {
-            return floatval(preg_replace("/[^0-9]/", "", $num));
-        }
-
-        return floatval(
-            preg_replace("/[^0-9]/", "", substr($num, 0, $sep)) . '.' .
-            preg_replace("/[^0-9]/", "", substr($num, $sep+1, strlen($num)))
-        );
     }
 }
